@@ -297,9 +297,6 @@ Page({
         gfx += textLine(W - MR - 55, y - 16, 'F1', 9, 0.361, 0.788, 0.478, '已完成');
       }
 
-      const timeStr = String(task.estimatedTime || 0) + ' min';
-      gfx += textLine(ML + 10, y - 28, 'F1', 8, 0.5, 0.5, 0.5, timeStr);
-
       // 分割线
       gfx += `0.9 0.9 0.9 RG\n`;
       gfx += `0.5 w\n`;
@@ -325,9 +322,6 @@ Page({
         // 子任务名
         const subColor = done ? [0.66, 0.66, 0.66] : [0.33, 0.33, 0.33];
         gfx += textLine(ML + 25, sy, 'F1', 9, subColor[0], subColor[1], subColor[2], sub.name || '');
-        const subTimeStr = String(sub.estimatedTime || 0) + ' min';
-        gfx += textLine(W - MR - 45, sy, 'F1', 8, 0.65, 0.65, 0.65, subTimeStr);
-
         sy -= 18;
       }
 
