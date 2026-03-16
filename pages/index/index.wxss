@@ -269,7 +269,7 @@
 .subtask-check {
   width: 40rpx;
   height: 40rpx;
-  border-radius: 8rpx;
+  border-radius: 50%;
   border: 4rpx solid #D0D0D0;
   background: #FFFFFF;
   display: flex;
