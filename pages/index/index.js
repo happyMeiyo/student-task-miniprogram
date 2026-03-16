@@ -9,6 +9,7 @@ Page({
     tasks: [],
     completedIds: [],
     subCompletedIds: [],
+    subDoneMap: {},  // { subId: true } 用于模板中快速判断完成状态
     progress: 0,
     totalSubTasks: 0,
     completedSubTasks: 0,
@@ -53,13 +54,17 @@ Page({
     const hour = d.getHours();
     let greeting = hour < 12 ? '早上好' : hour < 14 ? '中午好' : hour < 18 ? '下午好' : '晚上好';
 
+    const subDoneMap = {};
+    (record.subCompletedIds || []).forEach(id => { subDoneMap[id] = true; });
+
     this.setData({
       tasks,
       studentName,
       todayDate,
       weekday,
-      completedIds: record.completedIds,
-      subCompletedIds: record.subCompletedIds,
+      completedIds: record.completedIds || [],
+      subCompletedIds: record.subCompletedIds || [],
+      subDoneMap,
       progress,
       totalSubTasks: totalSub,
       completedSubTasks: completedSub,
@@ -116,7 +121,10 @@ Page({
     const record = { completedIds, subCompletedIds };
     wx.setStorageSync('dailyRecord_' + today, record);
 
-    this.setData({ subCompletedIds, completedIds, progress, completedSubTasks: completedSub });
+    const subDoneMap = {};
+    subCompletedIds.forEach(id => { subDoneMap[id] = true; });
+
+    this.setData({ subCompletedIds, completedIds, subDoneMap, progress, completedSubTasks: completedSub });
   },
 
   // 跳转到任务详情/编辑
@@ -144,6 +152,7 @@ Page({
           this.setData({
             completedIds: [],
             subCompletedIds: [],
+            subDoneMap: {},
             progress: 0,
             completedSubTasks: 0,
           });

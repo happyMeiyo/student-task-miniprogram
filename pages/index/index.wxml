@@ -76,7 +76,7 @@
       <!-- 子任务列表 -->
       <view class="subtask-list" wx:if="{{task.subTasks && task.subTasks.length > 0}}">
         <view
-          class="subtask-item {{subCompletedIds.indexOf(sub.id) !== -1 ? 'subtask-done' : ''}}"
+          class="subtask-item {{subDoneMap[sub.id] ? 'subtask-done' : ''}}"
           wx:for="{{task.subTasks}}"
           wx:key="id"
           wx:for-item="sub"
@@ -84,8 +84,8 @@
           data-task-id="{{task.id}}"
           data-sub-id="{{sub.id}}"
         >
-          <view class="subtask-check {{subCompletedIds.indexOf(sub.id) !== -1 ? 'checked' : ''}}" style="{{subCompletedIds.indexOf(sub.id) !== -1 ? 'background:' + task.color + '; border-color:' + task.color + ';' : ''}}">
-            <text class="check-icon" wx:if="{{subCompletedIds.indexOf(sub.id) !== -1}}">✓</text>
+          <view class="subtask-check {{subDoneMap[sub.id] ? 'checked' : ''}}" style="{{subDoneMap[sub.id] ? 'background:' + task.color + '; border-color:' + task.color + ';' : ''}}">
+            <text class="check-icon" wx:if="{{subDoneMap[sub.id]}}">✓</text>
           </view>
           <text class="subtask-name">{{sub.name}}</text>
           <text class="subtask-time">{{sub.estimatedTime}}min</text>
