@@ -134,8 +134,10 @@
 .menu-arrow { font-size: 40rpx; color: #CCCCCC; }
 
 .share-btn {
+  display: flex; align-items: center; gap: 20rpx;
   margin: 0; padding: 24rpx; line-height: inherit;
   background: none; border: none; text-align: left;
+  width: 100%; box-sizing: border-box;
 }
 .share-btn::after { display: none; }
 
