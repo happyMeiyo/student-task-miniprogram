@@ -80,7 +80,7 @@
     <view class="menu-card">
       <button class="share-btn-reset" open-type="share">
         <view class="menu-item">
-          <view class="menu-icon-wrap" style="background: #EEF7FF;">
+          <view class="menu-icon-wrap" style="background: #E8F4FD;">
             <text class="menu-icon">💬</text>
           </view>
           <view class="menu-text">
