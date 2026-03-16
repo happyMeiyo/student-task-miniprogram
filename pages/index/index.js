@@ -141,7 +141,12 @@ Page({
         if (res.confirm) {
           const today = app.getTodayKey();
           wx.setStorageSync('dailyRecord_' + today, { completedIds: [], subCompletedIds: [] });
-          this.loadData();
+          this.setData({
+            completedIds: [],
+            subCompletedIds: [],
+            progress: 0,
+            completedSubTasks: 0,
+          });
           wx.showToast({ title: '已重置', icon: 'success' });
         }
       }
