@@ -199,7 +199,8 @@ Page({
 
     // 将字符串编码为 UTF-16BE 十六进制（PDF 用 <hex> 语法显示中文）
     const toHex = (str) => {
-      if (!str) return 'FEFF';
+      str = String(str == null ? '' : str);
+      if (str.length === 0) return 'FEFF';
       let hex = 'FEFF'; // UTF-16BE BOM
       for (let i = 0; i < str.length; i++) {
         const code = str.charCodeAt(i);
@@ -208,8 +209,19 @@ Page({
       return hex;
     };
 
+    // 估算文本宽度（CJK 字符约等于字号，ASCII 约为字号的 0.5）
+    const estimateWidth = (str, fontSize) => {
+      str = String(str == null ? '' : str);
+      let w = 0;
+      for (let i = 0; i < str.length; i++) {
+        w += str.charCodeAt(i) > 127 ? fontSize : fontSize * 0.5;
+      }
+      return w;
+    };
+
     // 输出一行文本的辅助函数（每次都用独立 BT/ET 块，避免 Td 相对偏移问题）
-    const textLine = (x, y, font, size, r, g, b, str, bold) => {
+    const textLine = (x, y, font, size, r, g, b, rawStr, bold) => {
+      const str = String(rawStr == null ? '' : rawStr);
       let s = 'BT\n';
       if (bold) {
         s += `2 Tr ${bold} w\n`; // fill+stroke 模拟粗体
@@ -240,9 +252,8 @@ Page({
     // ── 标题：姓名 + 每日作业（左对齐），日期（右对齐） ──
     const title = (studentName || '') + ' 每日作业';
     gfx += textLine(ML + 10, y - 32, 'F1', 18, 1, 1, 1, title, 0.8);
-    // 日期右对齐：估算文字宽度（每个字符约 5pt @10pt 字号）
     const dateText = dateStr || '';
-    const dateWidth = dateText.length * 5;
+    const dateWidth = estimateWidth(dateText, 10);
     gfx += textLine(W - MR - 10 - dateWidth, y - 32, 'F1', 10, 1, 1, 1, dateText);
 
     y -= (headerH + 14);
@@ -349,8 +360,8 @@ Page({
     // obj 5: Type0 复合字体（支持中文），使用 STSong-Light + UniGB-UCS2-H CMap
     addObj(`<< /Type /Font /Subtype /Type0 /BaseFont /STSong-Light /Encoding /UniGB-UCS2-H /DescendantFonts [6 0 R] >>`);
 
-    // obj 6: CIDFont 子字体
-    addObj(`<< /Type /Font /Subtype /CIDFontType0 /BaseFont /STSong-Light /CIDSystemInfo << /Registry (Adobe) /Ordering (GB1) /Supplement 2 >> >>`);
+    // obj 6: CIDFont 子字体（DW=1000 全角默认宽度，W 指定 ASCII 半角宽度 500）
+    addObj(`<< /Type /Font /Subtype /CIDFontType0 /BaseFont /STSong-Light /DW 1000 /W [1 95 500] /CIDSystemInfo << /Registry (Adobe) /Ordering (GB1) /Supplement 2 >> >>`);
 
     // ── 组装 PDF 文件 ──
     let pdf = '%PDF-1.4\n';
