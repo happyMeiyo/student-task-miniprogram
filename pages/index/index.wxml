@@ -113,38 +113,4 @@
     <view style="height: 60rpx;"></view>
   </view>
 
-  <!-- ─── 导出弹窗 ─── -->
-  <view class="modal-mask" wx:if="{{showExportModal}}" bindtap="closeExport">
-    <view class="modal-box" catchtap="stopProp">
-      <text class="modal-title">📄 导出任务清单</text>
-
-      <view wx:if="{{exportSuccess}}" class="export-success">
-        <text class="export-success-icon">🎉</text>
-        <text class="export-success-text">已保存到相册！</text>
-        <text class="export-success-sub">在相册中可查看今日任务清单图片</text>
-      </view>
-
-      <view wx:else>
-        <view class="export-preview">
-          <!-- Canvas用于绘制导出图 -->
-          <canvas
-            id="exportCanvas"
-            type="2d"
-            style="width: 375px; height: 500px; border-radius: 16rpx;"
-          ></canvas>
-        </view>
-
-        <text class="export-tip">将今日任务清单导出为图片并保存到相册</text>
-
-        <view class="modal-btns">
-          <view class="modal-btn modal-btn-cancel" bindtap="closeExport">取消</view>
-          <view class="modal-btn modal-btn-confirm {{exporting ? 'btn-loading' : ''}}" bindtap="exportPDF">
-            <text wx:if="{{exporting}}">生成中...</text>
-            <text wx:else>保存图片</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
-
 </view>
