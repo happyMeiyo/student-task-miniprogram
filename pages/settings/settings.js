@@ -82,8 +82,7 @@ Page({
     const studentName = this.data.studentName;
 
     const d = new Date();
-    const months = ['一','二','三','四','五','六','七','八','九','十','十一','十二'];
-    const dateStr = `${d.getFullYear()}年${months[d.getMonth()]}月${d.getDate()}日`;
+    const dateStr = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
     const days = ['日','一','二','三','四','五','六'];
     const weekday = '星期' + days[d.getDay()];
 

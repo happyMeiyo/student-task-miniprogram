@@ -29,8 +29,7 @@ Page({
       const today = app.getTodayKey();
       const record = wx.getStorageSync('dailyRecord_' + today) || { subCompletedIds: [] };
       const d = new Date();
-      const months = ['一','二','三','四','五','六','七','八','九','十','十一','十二'];
-      const dateStr = `${d.getFullYear()}年${months[d.getMonth()]}月${d.getDate()}日`;
+      const dateStr = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
       const days = ['日','一','二','三','四','五','六'];
       const weekday = '星期' + days[d.getDay()];
       this._exportData = { studentName, dateStr, weekday, tasks, completedSubIds: record.subCompletedIds || [] };
@@ -198,16 +197,6 @@ Page({
     const { studentName, dateStr, weekday, tasks, completedSubIds } = exportData;
     const subDone = completedSubIds || [];
 
-    // 计算统计
-    let totalSub = 0, doneSub = 0;
-    (tasks || []).forEach(t => {
-      (t.subTasks || []).forEach(s => {
-        totalSub++;
-        if (subDone.includes(s.id)) doneSub++;
-      });
-    });
-    const pct = totalSub > 0 ? Math.round(doneSub / totalSub * 100) : 0;
-
     // 将字符串编码为 UTF-16BE 十六进制（PDF 用 <hex> 语法显示中文）
     const toHex = (str) => {
       if (!str) return 'FEFF';
@@ -244,25 +233,19 @@ Page({
     let gfx = '';
 
     // ── 顶部色块 ──
+    const headerH = 50;
     gfx += `0.431 0.776 0.961 rg\n`; // #6EC6F5
-    gfx += `${ML} ${y - 80} ${W - ML - MR} 80 re f\n`;
-    gfx += `0.659 0.902 0.808 rg\n`; // #A8E6CF
-    gfx += `${W - MR - 60} ${y - 20} 55 20 re f\n`;
+    gfx += `${ML} ${y - headerH} ${W - ML - MR} ${headerH} re f\n`;
 
-    // ── 标题文字 ──
-    gfx += textLine(ML + 10, y - 30, 'F1', 20, 1, 1, 1, '每日任务清单', 0.8);
-    gfx += textLine(ML + 10, y - 46, 'F1', 11, 1, 1, 1, studentName || '');
-    gfx += textLine(ML + 10, y - 60, 'F1', 10, 1, 1, 1, (dateStr || '') + '  ' + (weekday || ''));
-    gfx += textLine(ML + 10, y - 74, 'F1', 12, 1, 1, 1, `完成度: ${pct}%  ${doneSub}/${totalSub} 个子任务`, 0.5);
+    // ── 标题：姓名 + 每日作业（左对齐），日期（右对齐） ──
+    const title = (studentName || '') + ' 每日作业';
+    gfx += textLine(ML + 10, y - 32, 'F1', 18, 1, 1, 1, title, 0.8);
+    // 日期右对齐：估算文字宽度（每个字符约 5pt @10pt 字号）
+    const dateText = dateStr || '';
+    const dateWidth = dateText.length * 5;
+    gfx += textLine(W - MR - 10 - dateWidth, y - 32, 'F1', 10, 1, 1, 1, dateText);
 
-    // 进度条
-    const barX = ML + 200, barY_pdf = y - 74, barW = W - ML - MR - 210;
-    gfx += `0.8 0.8 0.8 rg\n`;
-    gfx += `${barX} ${barY_pdf - 4} ${barW} 10 re f\n`;
-    gfx += `1.0 0.851 0.353 rg\n`; // #FFD95A
-    gfx += `${barX} ${barY_pdf - 4} ${Math.round(barW * pct / 100)} 10 re f\n`;
-
-    y -= 94;
+    y -= (headerH + 14);
 
     // ── 任务卡片 ──
     const colorMap = {
