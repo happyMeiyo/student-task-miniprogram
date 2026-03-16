@@ -76,24 +76,6 @@
   </view>
 
   <view class="menu-section">
-    <text class="menu-title">🔗 分享</text>
-    <view class="menu-card">
-      <button class="share-btn-reset" open-type="share">
-        <view class="menu-item">
-          <view class="menu-icon-wrap" style="background: #E8F4FD;">
-            <text class="menu-icon">💬</text>
-          </view>
-          <view class="menu-text">
-            <text class="menu-name">分享给朋友</text>
-            <text class="menu-desc">推荐给朋友一起使用</text>
-          </view>
-          <text class="menu-arrow">›</text>
-        </view>
-      </button>
-    </view>
-  </view>
-
-  <view class="menu-section">
     <text class="menu-title">ℹ️ 关于</text>
     <view class="menu-card">
       <view class="menu-item">
@@ -124,5 +106,10 @@
     </view>
   </view>
 
-  <view style="height: 80rpx;"></view>
+  <view style="height: 140rpx;"></view>
+
+  <!-- 吸底分享按钮 -->
+  <view class="share-bottom-wrap">
+    <button class="share-bottom-btn" open-type="share">💬 分享给朋友</button>
+  </view>
 </view>

@@ -133,15 +133,22 @@
 
 .menu-arrow { font-size: 40rpx; color: #CCCCCC; }
 
-.share-btn-reset {
-  margin: 0; padding: 0; border: none;
-  background: none; line-height: inherit;
-  text-align: left; width: 100%;
-  font-size: inherit; font-weight: inherit;
-  color: inherit;
-}
-.share-btn-reset::after { display: none; }
-
 .danger-text { color: #FF7F7F !important; }
+
+/* ─── 吸底分享按钮 ─── */
+.share-bottom-wrap {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 16rpx 32rpx calc(env(safe-area-inset-bottom) + 16rpx);
+  background: rgba(255, 248, 236, 0.95);
+  backdrop-filter: blur(8px);
+}
+.share-bottom-btn {
+  background: linear-gradient(135deg, #6EC6F5, #A8E6CF);
+  color: #fff; font-size: 30rpx; font-weight: 700;
+  border: none; border-radius: 24rpx;
+  padding: 24rpx 0; text-align: center;
+  box-shadow: 0 4rpx 16rpx rgba(110, 198, 245, 0.35);
+}
+.share-bottom-btn::after { display: none; }
 
 .version-text { font-size: 24rpx; color: #CCCCCC; }
