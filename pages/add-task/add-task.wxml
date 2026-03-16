@@ -1,0 +1,139 @@
+<!-- pages/add-task/add-task.wxml -->
+<view class="container">
+
+  <!-- 导航栏 -->
+  <view class="nav-bar" style="background: {{color}};">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">添加新任务</text>
+    <view style="width: 72rpx;"></view>
+  </view>
+
+  <!-- 顶部预览 -->
+  <view class="task-preview" style="background: linear-gradient(135deg, {{color}}, {{color}}88);">
+    <view class="preview-icon-wrap" bindtap="toggleIconPicker">
+      <text class="preview-icon">{{icon}}</text>
+      <text class="preview-icon-hint">点击换图标</text>
+    </view>
+  </view>
+
+  <!-- 图标选择器 -->
+  <view class="icon-picker" wx:if="{{showIconPicker}}">
+    <view class="icon-grid">
+      <view
+        class="icon-option {{icon === item ? 'icon-selected' : ''}}"
+        wx:for="{{icons}}"
+        wx:key="*this"
+        wx:for-item="item"
+        bindtap="selectIcon"
+        data-icon="{{item}}"
+      >
+        <text class="icon-option-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="section-card">
+    <text class="section-title">📋 任务信息</text>
+
+    <view class="form-item">
+      <text class="form-label">任务名称 *</text>
+      <input class="form-input" value="{{name}}" placeholder="如：语文作业、阅读..." bindinput="onNameInput" maxlength="20" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">预计时间（分钟）</text>
+      <input class="form-input" value="{{estimatedTime}}" type="number" placeholder="30" bindinput="onTimeInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">任务颜色</text>
+      <view class="color-grid">
+        <view
+          class="color-dot {{color === c ? 'color-selected' : ''}}"
+          wx:for="{{colors}}"
+          wx:key="*this"
+          wx:for-item="c"
+          style="background: {{c}};"
+          bindtap="selectColor"
+          data-color="{{c}}"
+        >
+          <text class="color-check" wx:if="{{color === c}}">✓</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">任务分类</text>
+      <view class="category-list">
+        <view
+          class="category-item {{category === cat.id ? 'category-selected' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="id"
+          wx:for-item="cat"
+          bindtap="selectCategory"
+          data-id="{{cat.id}}"
+          style="{{category === cat.id ? 'background:' + color + '; color:#fff; border-color:' + color + ';' : ''}}"
+        >
+          <text class="cat-icon">{{cat.icon}}</text>
+          <text class="cat-name">{{cat.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 子任务 -->
+  <view class="section-card">
+    <view class="subtask-header">
+      <text class="section-title">✅ 子任务（可选）</text>
+      <view class="add-sub-btn" bindtap="showAddSub">
+        <text class="add-sub-text">＋ 添加</text>
+      </view>
+    </view>
+
+    <view class="sub-list" wx:if="{{subTasks.length > 0}}">
+      <view class="sub-item" wx:for="{{subTasks}}" wx:key="id" wx:for-item="sub">
+        <view class="sub-dot" style="background: {{color}};"></view>
+        <view class="sub-info">
+          <text class="sub-name">{{sub.name}}</text>
+          <text class="sub-time">{{sub.estimatedTime}} 分钟</text>
+        </view>
+        <view class="sub-del" bindtap="removeSubTask" data-sub-id="{{sub.id}}">
+          <text class="sub-del-icon">×</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="sub-empty" wx:else>
+      <text class="sub-empty-text">可以为任务添加详细的子任务</text>
+    </view>
+  </view>
+
+  <!-- 创建按钮 -->
+  <view class="create-btn" style="background: linear-gradient(135deg, {{color}}, {{color}}cc);" bindtap="createTask">
+    <text class="create-btn-text">🎉 创建任务</text>
+  </view>
+
+  <view style="height: 60rpx;"></view>
+
+  <!-- 添加子任务弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddSubModal}}">
+    <view class="modal-box">
+      <text class="modal-title">添加子任务</text>
+      <view class="modal-form">
+        <text class="form-label">子任务名称</text>
+        <input class="form-input" value="{{newSubName}}" placeholder="如：抄写生字..." bindinput="onNewSubNameInput" focus="{{showAddSubModal}}" maxlength="30" />
+      </view>
+      <view class="modal-form">
+        <text class="form-label">预计时间（分钟）</text>
+        <input class="form-input" value="{{newSubTime}}" type="number" placeholder="10" bindinput="onNewSubTimeInput" />
+      </view>
+      <view class="modal-btns">
+        <view class="modal-btn modal-cancel" bindtap="closeAddSub">取消</view>
+        <view class="modal-btn modal-confirm" style="background: {{color}};" bindtap="addSubTask">添加</view>
+      </view>
+    </view>
+  </view>
+</view>

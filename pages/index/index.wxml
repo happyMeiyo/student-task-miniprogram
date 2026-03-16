@@ -1,0 +1,150 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+
+  <!-- ─── 顶部头部 ─── -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="header-top">
+        <view>
+          <text class="greeting">{{greeting}}，{{studentName}} 👋</text>
+          <text class="date-text">{{todayDate}} {{weekday}}</text>
+        </view>
+        <view class="header-actions">
+          <view class="icon-btn" bindtap="showExport">
+            <text class="icon-btn-text">导出</text>
+          </view>
+          <view class="icon-btn icon-btn-reset" bindtap="resetToday">
+            <text class="icon-btn-text">重置</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 进度卡片 -->
+      <view class="progress-card">
+        <view class="progress-info">
+          <view>
+            <text class="progress-title">今日完成进度</text>
+            <text class="progress-sub">{{completedSubTasks}}/{{totalSubTasks}} 个小任务</text>
+          </view>
+          <text class="progress-percent">{{progress}}%</text>
+        </view>
+        <view class="progress-bar-bg">
+          <view class="progress-bar-fill" style="width: {{progress}}%">
+            <view class="progress-shine"></view>
+          </view>
+        </view>
+        <view class="progress-emoji">
+          <text wx:if="{{progress === 100}}">🏆 全部完成！太棒了！</text>
+          <text wx:elif="{{progress >= 80}}">🌟 快完成了，加油！</text>
+          <text wx:elif="{{progress >= 50}}">💪 已完成一半，继续！</text>
+          <text wx:elif="{{progress > 0}}">🚀 已经开始啦！</text>
+          <text wx:else>✨ 点击任务开始今天的学习</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ─── 任务列表 ─── -->
+  <view class="task-list">
+
+    <view
+      class="task-card"
+      wx:for="{{tasks}}"
+      wx:key="id"
+      wx:for-item="task"
+    >
+      <!-- 任务头部 -->
+      <view class="task-header" style="border-left: 8rpx solid {{task.color}};">
+        <view class="task-icon-wrap" style="background: {{task.color}}20;">
+          <text class="task-icon">{{task.icon}}</text>
+        </view>
+        <view class="task-info">
+          <text class="task-name">{{task.name}}</text>
+          <text class="task-time">⏱ 约 {{task.estimatedTime}} 分钟</text>
+        </view>
+        <view class="task-actions">
+          <view class="task-edit-btn" bindtap="goToDetail" data-task-id="{{task.id}}">
+            <text class="task-edit-text">编辑</text>
+          </view>
+          <view class="task-del-btn" bindtap="deleteTask" data-task-id="{{task.id}}">
+            <text class="task-del-text">🗑</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 子任务列表 -->
+      <view class="subtask-list" wx:if="{{task.subTasks && task.subTasks.length > 0}}">
+        <view
+          class="subtask-item {{subCompletedIds.indexOf(sub.id) !== -1 ? 'subtask-done' : ''}}"
+          wx:for="{{task.subTasks}}"
+          wx:key="id"
+          wx:for-item="sub"
+          bindtap="toggleSubTask"
+          data-task-id="{{task.id}}"
+          data-sub-id="{{sub.id}}"
+        >
+          <view class="subtask-check {{subCompletedIds.indexOf(sub.id) !== -1 ? 'checked' : ''}}" style="border-color: {{task.color}}; {{subCompletedIds.indexOf(sub.id) !== -1 ? 'background:' + task.color + ';' : ''}}">
+            <text class="check-icon" wx:if="{{subCompletedIds.indexOf(sub.id) !== -1}}">✓</text>
+          </view>
+          <text class="subtask-name">{{sub.name}}</text>
+          <text class="subtask-time">{{sub.estimatedTime}}min</text>
+        </view>
+      </view>
+
+      <!-- 空子任务提示 -->
+      <view class="subtask-empty" wx:if="{{!task.subTasks || task.subTasks.length === 0}}">
+        <text class="subtask-empty-text">暂无子任务，点击「编辑」添加</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{tasks.length === 0}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">还没有任务，快去添加吧！</text>
+    </view>
+
+    <!-- 添加任务按钮 -->
+    <view class="add-task-btn" bindtap="goToAddTask">
+      <text class="add-icon">＋</text>
+      <text class="add-text">添加新任务</text>
+    </view>
+
+    <view style="height: 60rpx;"></view>
+  </view>
+
+  <!-- ─── 导出弹窗 ─── -->
+  <view class="modal-mask" wx:if="{{showExportModal}}" bindtap="closeExport">
+    <view class="modal-box" catchtap="stopProp">
+      <text class="modal-title">📄 导出任务清单</text>
+
+      <view wx:if="{{exportSuccess}}" class="export-success">
+        <text class="export-success-icon">🎉</text>
+        <text class="export-success-text">已保存到相册！</text>
+        <text class="export-success-sub">在相册中可查看今日任务清单图片</text>
+      </view>
+
+      <view wx:else>
+        <view class="export-preview">
+          <!-- Canvas用于绘制导出图 -->
+          <canvas
+            id="exportCanvas"
+            type="2d"
+            style="width: 375px; height: 500px; border-radius: 16rpx;"
+          ></canvas>
+        </view>
+
+        <text class="export-tip">将今日任务清单导出为图片并保存到相册</text>
+
+        <view class="modal-btns">
+          <view class="modal-btn modal-btn-cancel" bindtap="closeExport">取消</view>
+          <view class="modal-btn modal-btn-confirm {{exporting ? 'btn-loading' : ''}}" bindtap="exportPDF">
+            <text wx:if="{{exporting}}">生成中...</text>
+            <text wx:else>保存图片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

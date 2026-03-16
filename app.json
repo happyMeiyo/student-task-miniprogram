@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/task-detail/task-detail",
+    "pages/add-task/add-task",
+    "pages/settings/settings",
+    "pages/export-pdf/export-pdf"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#6EC6F5",
+    "navigationBarTitleText": "每日任务清单",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF8EC"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#6EC6F5",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "今日任务",
+        "iconPath": "images/task.png",
+        "selectedIconPath": "images/task-active.png"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "设置",
+        "iconPath": "images/setting.png",
+        "selectedIconPath": "images/setting-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,200 @@
+<!-- pages/task-detail/task-detail.wxml -->
+<view class="container" wx:if="{{task}}">
+
+  <!-- ─── 自定义导航栏 ─── -->
+  <view class="nav-bar" style="background: {{editColor}};">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">编辑任务</text>
+    <view class="nav-save" bindtap="saveTask">
+      <text class="nav-save-text">保存</text>
+    </view>
+  </view>
+
+  <!-- ─── 任务图标预览 ─── -->
+  <view class="task-preview" style="background: linear-gradient(135deg, {{editColor}}, {{editColor}}99);">
+    <view class="preview-icon-wrap" bindtap="toggleIconPicker">
+      <text class="preview-icon">{{editIcon}}</text>
+      <text class="preview-icon-hint">点击换图标</text>
+    </view>
+  </view>
+
+  <!-- 图标选择器 -->
+  <view class="icon-picker" wx:if="{{showIconPicker}}">
+    <text class="section-label">选择图标</text>
+    <view class="icon-grid">
+      <view
+        class="icon-option {{editIcon === icon ? 'icon-selected' : ''}}"
+        wx:for="{{icons}}"
+        wx:key="*this"
+        wx:for-item="icon"
+        bindtap="selectIcon"
+        data-icon="{{icon}}"
+      >
+        <text class="icon-option-text">{{icon}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ─── 基本信息编辑 ─── -->
+  <view class="section-card">
+    <text class="section-title">📋 基本信息</text>
+
+    <view class="form-item">
+      <text class="form-label">任务名称</text>
+      <input
+        class="form-input"
+        value="{{editName}}"
+        placeholder="请输入任务名称"
+        maxlength="20"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">预计时间（分钟）</text>
+      <input
+        class="form-input"
+        value="{{editTime}}"
+        type="number"
+        placeholder="30"
+        bindinput="onTimeInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">任务颜色</text>
+      <view class="color-grid">
+        <view
+          class="color-dot {{editColor === color ? 'color-selected' : ''}}"
+          wx:for="{{colors}}"
+          wx:key="*this"
+          wx:for-item="color"
+          style="background: {{color}};"
+          bindtap="selectColor"
+          data-color="{{color}}"
+        >
+          <text class="color-check" wx:if="{{editColor === color}}">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ─── 子任务列表 ─── -->
+  <view class="section-card">
+    <view class="subtask-header">
+      <text class="section-title">✅ 子任务</text>
+      <view class="add-sub-btn" bindtap="showAddSub">
+        <text class="add-sub-text">＋ 添加子任务</text>
+      </view>
+    </view>
+
+    <!-- 子任务列表 -->
+    <view class="subtask-list" wx:if="{{task.subTasks && task.subTasks.length > 0}}">
+      <view
+        class="sub-item"
+        wx:for="{{task.subTasks}}"
+        wx:key="id"
+        wx:for-item="sub"
+      >
+        <view class="sub-dot" style="background: {{editColor}};"></view>
+        <view class="sub-info" bindtap="editSubTask" data-sub-id="{{sub.id}}">
+          <text class="sub-name">{{sub.name}}</text>
+          <text class="sub-time">{{sub.estimatedTime}} 分钟</text>
+        </view>
+        <view class="sub-actions">
+          <view class="sub-move-btn" bindtap="moveSubUp" data-sub-id="{{sub.id}}">
+            <text class="sub-move-icon">↑</text>
+          </view>
+          <view class="sub-move-btn" bindtap="moveSubDown" data-sub-id="{{sub.id}}">
+            <text class="sub-move-icon">↓</text>
+          </view>
+          <view class="sub-edit-btn" bindtap="editSubTask" data-sub-id="{{sub.id}}">
+            <text class="sub-edit-icon">✎</text>
+          </view>
+          <view class="sub-del-btn" bindtap="deleteSubTask" data-sub-id="{{sub.id}}">
+            <text class="sub-del-icon">🗑</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="sub-empty" wx:else>
+      <text class="sub-empty-text">暂无子任务，点击右上角添加</text>
+    </view>
+  </view>
+
+  <view style="height: 60rpx;"></view>
+
+  <!-- ─── 添加子任务弹窗 ─── -->
+  <view class="modal-mask" wx:if="{{showAddSubModal}}">
+    <view class="modal-box">
+      <text class="modal-title">添加子任务</text>
+
+      <view class="modal-form">
+        <text class="form-label">子任务名称</text>
+        <input
+          class="form-input"
+          value="{{newSubName}}"
+          placeholder="如：抄写生字、背单词..."
+          maxlength="30"
+          bindinput="onNewSubNameInput"
+          focus="{{showAddSubModal}}"
+        />
+      </view>
+
+      <view class="modal-form">
+        <text class="form-label">预计时间（分钟）</text>
+        <input
+          class="form-input"
+          value="{{newSubTime}}"
+          type="number"
+          placeholder="10"
+          bindinput="onNewSubTimeInput"
+        />
+      </view>
+
+      <view class="modal-btns">
+        <view class="modal-btn modal-cancel" bindtap="closeAddSub">取消</view>
+        <view class="modal-btn modal-confirm" style="background: {{editColor}};" bindtap="addSubTask">添加</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ─── 编辑子任务弹窗 ─── -->
+  <view class="modal-mask" wx:if="{{showSubEditModal}}">
+    <view class="modal-box">
+      <text class="modal-title">编辑子任务</text>
+
+      <view class="modal-form">
+        <text class="form-label">子任务名称</text>
+        <input
+          class="form-input"
+          value="{{editSubName}}"
+          placeholder="子任务名称"
+          maxlength="30"
+          bindinput="onEditSubNameInput"
+          focus="{{showSubEditModal}}"
+        />
+      </view>
+
+      <view class="modal-form">
+        <text class="form-label">预计时间（分钟）</text>
+        <input
+          class="form-input"
+          value="{{editSubTime}}"
+          type="number"
+          placeholder="10"
+          bindinput="onEditSubTimeInput"
+        />
+      </view>
+
+      <view class="modal-btns">
+        <view class="modal-btn modal-cancel" bindtap="closeSubEdit">取消</view>
+        <view class="modal-btn modal-confirm" style="background: {{editColor}};" bindtap="saveSubTask">保存</view>
+      </view>
+    </view>
+  </view>
+
+</view>

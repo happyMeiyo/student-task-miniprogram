@@ -1,0 +1,440 @@
+/* pages/index/index.wxss */
+
+/* ─── Header ─── */
+.header {
+  position: relative;
+  background: linear-gradient(135deg, #6EC6F5 0%, #A8E6CF 100%);
+  padding-top: env(safe-area-inset-top);
+  overflow: hidden;
+}
+
+.header-content {
+  padding: 30rpx 32rpx 60rpx;
+  position: relative;
+  z-index: 1;
+}
+
+/* 底部圆弧 */
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -2rpx;
+  left: -20rpx;
+  right: -20rpx;
+  height: 60rpx;
+  background: #FFF8EC;
+  border-radius: 50%;
+}
+
+/* 装饰圆 */
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60rpx;
+  right: -60rpx;
+  width: 300rpx;
+  height: 300rpx;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+}
+
+.greeting {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 6rpx;
+}
+
+.date-text {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+.header-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.icon-btn {
+  background: rgba(255,255,255,0.25);
+  border-radius: 30rpx;
+  padding: 10rpx 22rpx;
+  backdrop-filter: blur(8px);
+}
+
+.icon-btn-reset {
+  background: rgba(255,127,127,0.3);
+}
+
+.icon-btn-text {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ─── 进度卡片 ─── */
+.progress-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 24rpx;
+  padding: 28rpx 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.10);
+}
+
+.progress-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.progress-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2D2D2D;
+  margin-bottom: 4rpx;
+}
+
+.progress-sub {
+  font-size: 22rpx;
+  color: #AAAAAA;
+}
+
+.progress-percent {
+  font-size: 52rpx;
+  font-weight: 900;
+  color: #6EC6F5;
+  line-height: 1;
+}
+
+.progress-bar-bg {
+  height: 20rpx;
+  background: #F0F0F0;
+  border-radius: 10rpx;
+  overflow: hidden;
+  margin-bottom: 18rpx;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6EC6F5, #5CC97A);
+  border-radius: 10rpx;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  min-width: 4rpx;
+}
+
+.progress-shine {
+  position: absolute;
+  top: 0; right: 0;
+  width: 60rpx;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100rpx); }
+  100% { transform: translateX(60rpx); }
+}
+
+.progress-emoji {
+  font-size: 24rpx;
+  color: #888888;
+  text-align: center;
+}
+
+/* ─── 任务列表 ─── */
+.task-list {
+  padding: 16rpx 24rpx 0;
+  margin-top: -20rpx;
+}
+
+/* ─── 任务卡片 ─── */
+.task-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 24rpx 20rpx;
+  background: #fff;
+  gap: 16rpx;
+}
+
+.task-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.task-icon {
+  font-size: 40rpx;
+}
+
+.task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-name {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #2D2D2D;
+  margin-bottom: 6rpx;
+}
+
+.task-time {
+  font-size: 22rpx;
+  color: #AAAAAA;
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+
+.task-edit-btn {
+  background: #EEF7FF;
+  border-radius: 16rpx;
+  padding: 8rpx 20rpx;
+}
+
+.task-edit-text {
+  font-size: 22rpx;
+  color: #6EC6F5;
+  font-weight: 700;
+}
+
+.task-del-btn {
+  width: 56rpx;
+  height: 56rpx;
+  background: #FFF0F0;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-del-text {
+  font-size: 28rpx;
+}
+
+/* ─── 子任务 ─── */
+.subtask-list {
+  padding: 4rpx 24rpx 16rpx;
+  background: #FAFAFA;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 2rpx solid #F5F5F5;
+  gap: 16rpx;
+  transition: all 0.2s;
+}
+
+.subtask-item:last-child {
+  border-bottom: none;
+}
+
+.subtask-done .subtask-name {
+  color: #CCCCCC !important;
+  text-decoration: line-through;
+}
+
+.subtask-check {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  border: 4rpx solid #DDDDDD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.subtask-check.checked {
+  border-color: transparent;
+}
+
+.check-icon {
+  font-size: 24rpx;
+  color: #FFFFFF;
+  font-weight: 900;
+}
+
+.subtask-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #444444;
+  transition: all 0.2s;
+}
+
+.subtask-time {
+  font-size: 22rpx;
+  color: #BBBBBB;
+  flex-shrink: 0;
+}
+
+.subtask-empty {
+  padding: 20rpx 24rpx;
+  background: #FAFAFA;
+}
+
+.subtask-empty-text {
+  font-size: 24rpx;
+  color: #CCCCCC;
+}
+
+/* ─── 添加按钮 ─── */
+.add-task-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-top: 8rpx;
+  border: 3rpx dashed #D0E8FF;
+  box-shadow: none;
+}
+
+.add-icon {
+  font-size: 40rpx;
+  color: #6EC6F5;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.add-text {
+  font-size: 28rpx;
+  color: #6EC6F5;
+  font-weight: 700;
+}
+
+/* ─── 弹窗 ─── */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 40rpx;
+  width: 640rpx;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.modal-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #2D2D2D;
+  text-align: center;
+  margin-bottom: 28rpx;
+}
+
+.export-preview {
+  width: 100%;
+  height: 300rpx;
+  background: #F7F7F7;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.export-tip {
+  display: block;
+  font-size: 24rpx;
+  color: #AAAAAA;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 16rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal-btn-cancel {
+  background: #F5F5F5;
+  color: #888888;
+}
+
+.modal-btn-confirm {
+  background: linear-gradient(135deg, #6EC6F5, #5BB8E8);
+  color: #FFFFFF;
+}
+
+.btn-loading {
+  opacity: 0.7;
+}
+
+.export-success {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.export-success-icon {
+  font-size: 100rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.export-success-text {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #2D2D2D;
+  margin-bottom: 8rpx;
+}
+
+.export-success-sub {
+  font-size: 24rpx;
+  color: #AAAAAA;
+}

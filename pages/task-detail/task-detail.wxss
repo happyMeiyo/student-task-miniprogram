@@ -1,0 +1,379 @@
+/* pages/task-detail/task-detail.wxss */
+
+/* ─── 导航栏 ─── */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top) + 10rpx) 24rpx 20rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.3s;
+}
+
+.nav-back {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255,255,255,0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-back-icon {
+  font-size: 48rpx;
+  color: #fff;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #fff;
+}
+
+.nav-save {
+  background: rgba(255,255,255,0.9);
+  border-radius: 30rpx;
+  padding: 12rpx 28rpx;
+}
+
+.nav-save-text {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: #333;
+}
+
+/* ─── 任务预览 ─── */
+.task-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 0 50rpx;
+  margin-top: -2rpx;
+}
+
+.preview-icon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.preview-icon {
+  font-size: 100rpx;
+  filter: drop-shadow(0 4rpx 8rpx rgba(0,0,0,0.2));
+}
+
+.preview-icon-hint {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.8);
+  background: rgba(0,0,0,0.15);
+  border-radius: 20rpx;
+  padding: 6rpx 16rpx;
+}
+
+/* ─── 图标选择器 ─── */
+.icon-picker {
+  margin: -20rpx 24rpx 0;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.10);
+  position: relative;
+  z-index: 10;
+  margin-bottom: 16rpx;
+}
+
+.section-label {
+  display: block;
+  font-size: 24rpx;
+  color: #AAAAAA;
+  margin-bottom: 16rpx;
+}
+
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.icon-option {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  background: #F7F7F7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.icon-selected {
+  background: #E8F7FF;
+  border: 3rpx solid #6EC6F5;
+  transform: scale(1.1);
+}
+
+.icon-option-text {
+  font-size: 40rpx;
+}
+
+/* ─── Section 卡片 ─── */
+.section-card {
+  margin: 0 24rpx 20rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.section-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #2D2D2D;
+  margin-bottom: 24rpx;
+}
+
+/* ─── 表单 ─── */
+.form-item {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 24rpx;
+  color: #888888;
+  margin-bottom: 10rpx;
+  font-weight: 600;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  background: #F7F7F7;
+  border-radius: 16rpx;
+  padding: 22rpx 24rpx;
+  font-size: 28rpx;
+  color: #2D2D2D;
+  border: 3rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  border-color: #6EC6F5;
+  background: #fff;
+}
+
+/* ─── 颜色选择 ─── */
+.color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.color-dot {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.color-selected {
+  transform: scale(1.2);
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.25);
+}
+
+.color-check {
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: 900;
+}
+
+/* ─── 子任务区 ─── */
+.subtask-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.add-sub-btn {
+  background: #EEF7FF;
+  border-radius: 20rpx;
+  padding: 10rpx 20rpx;
+}
+
+.add-sub-text {
+  font-size: 24rpx;
+  color: #6EC6F5;
+  font-weight: 700;
+}
+
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.sub-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #F5F5F5;
+  gap: 16rpx;
+}
+
+.sub-item:last-child {
+  border-bottom: none;
+}
+
+.sub-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sub-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sub-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 4rpx;
+}
+
+.sub-time {
+  font-size: 22rpx;
+  color: #BBBBBB;
+}
+
+.sub-actions {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  flex-shrink: 0;
+}
+
+.sub-move-btn {
+  width: 52rpx;
+  height: 52rpx;
+  background: #F5F5F5;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-move-icon {
+  font-size: 26rpx;
+  color: #888888;
+}
+
+.sub-edit-btn {
+  width: 52rpx;
+  height: 52rpx;
+  background: #EEF7FF;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-edit-icon {
+  font-size: 28rpx;
+  color: #6EC6F5;
+}
+
+.sub-del-btn {
+  width: 52rpx;
+  height: 52rpx;
+  background: #FFF0F0;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-del-icon {
+  font-size: 28rpx;
+}
+
+.sub-empty {
+  padding: 30rpx 0;
+  text-align: center;
+}
+
+.sub-empty-text {
+  font-size: 26rpx;
+  color: #CCCCCC;
+}
+
+/* ─── 弹窗 ─── */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #FFFFFF;
+  border-radius: 32rpx;
+  padding: 40rpx;
+  width: 640rpx;
+}
+
+.modal-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #2D2D2D;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.modal-form {
+  margin-bottom: 20rpx;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 28rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.modal-cancel {
+  background: #F0F0F0;
+  color: #888888;
+}
+
+.modal-confirm {
+  /* background set via style */
+}

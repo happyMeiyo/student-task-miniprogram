@@ -1,0 +1,92 @@
+<!-- pages/export-pdf/export-pdf.wxml -->
+<view class="container">
+
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">导出 PDF</text>
+    <view style="width:72rpx;"></view>
+  </view>
+
+  <!-- 主内容 -->
+  <view class="content">
+
+    <!-- 预览卡片 -->
+    <view class="preview-card">
+      <view class="preview-header">
+        <text class="preview-icon-text">📄</text>
+        <view class="preview-info">
+          <text class="preview-name">{{studentName}} 的任务清单</text>
+          <text class="preview-date">{{dateStr}}</text>
+        </view>
+      </view>
+      <view class="preview-stats">
+        <view class="stat-item">
+          <text class="stat-num blue">{{totalSub}}</text>
+          <text class="stat-label">个子任务</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num green">{{doneSub}}</text>
+          <text class="stat-label">已完成</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num purple">{{pct}}%</text>
+          <text class="stat-label">完成率</text>
+        </view>
+      </view>
+      <view class="progress-bar-bg">
+        <view class="progress-bar-fill" style="width:{{pct}}%;"></view>
+      </view>
+    </view>
+
+    <!-- PDF 内容说明 -->
+    <view class="info-card">
+      <text class="info-title">📋 PDF 将包含</text>
+      <view class="info-item"><text class="info-dot">•</text><text class="info-text">学生姓名、日期和完成进度</text></view>
+      <view class="info-item"><text class="info-dot">•</text><text class="info-text">每个主任务及其子任务列表</text></view>
+      <view class="info-item"><text class="info-dot">•</text><text class="info-text">每个子任务的完成状态（已勾选/未勾选）</text></view>
+      <view class="info-item"><text class="info-dot">•</text><text class="info-text">各任务预计用时</text></view>
+    </view>
+
+    <!-- 状态显示 -->
+    <view class="status-card" wx:if="{{status !== 'ready'}}">
+      <view class="loading-ring" wx:if="{{status === 'building'}}"></view>
+      <text class="status-icon-text" wx:if="{{status === 'done'}}">✅</text>
+      <text class="status-icon-text red" wx:if="{{status === 'error'}}">❌</text>
+      <text class="status-text">{{statusText}}</text>
+      <view class="gen-progress-bg" wx:if="{{status === 'building'}}">
+        <view class="gen-progress-fill" style="width:{{progress}}%;"></view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="btn-group">
+      <view
+        class="btn-export"
+        bindtap="startExport"
+        wx:if="{{status === 'ready' || status === 'error'}}"
+      >
+        <text class="btn-export-text">📥 生成并打开 PDF</text>
+      </view>
+
+      <view class="btn-export btn-retry" bindtap="startExport" wx:if="{{status === 'done'}}">
+        <text class="btn-export-text">🔄 重新生成</text>
+      </view>
+
+      <view class="btn-share" bindtap="shareFile" wx:if="{{status === 'done'}}">
+        <text class="btn-share-text">📤 分享给家长 / 老师</text>
+      </view>
+    </view>
+
+    <!-- 提示说明 -->
+    <view class="tip-card">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">PDF 生成后将在微信内置阅读器中打开，可通过右上角菜单保存或转发。</text>
+    </view>
+
+  </view>
+</view>
