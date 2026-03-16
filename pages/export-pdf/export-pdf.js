@@ -219,19 +219,31 @@ Page({
       return w;
     };
 
+    // 判断字符串是否包含 CJK 字符
+    const hasCJK = (str) => /[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/.test(str);
+
     // 输出一行文本的辅助函数（每次都用独立 BT/ET 块，避免 Td 相对偏移问题）
-    const textLine = (x, y, font, size, r, g, b, rawStr, bold) => {
+    // 含中文 → F1（楷体 CIDFont，用 hex 编码），纯 ASCII → F2（Arial，用 literal 编码）
+    const textLine = (x, y, _font, size, r, g, b, rawStr, bold) => {
       const str = String(rawStr == null ? '' : rawStr);
+      const useCJK = hasCJK(str);
+      const font = useCJK ? 'F1' : 'F2';
       let s = 'BT\n';
       if (bold) {
-        s += `2 Tr ${bold} w\n`; // fill+stroke 模拟粗体
+        s += `2 Tr ${bold} w\n`;
         s += `${r} ${g} ${b} rg ${r} ${g} ${b} RG\n`;
       } else {
         s += `${r} ${g} ${b} rg\n`;
       }
       s += `/${font} ${size} Tf\n`;
       s += `${x} ${y} Td\n`;
-      s += `<${toHex(str)}> Tj\n`;
+      if (useCJK) {
+        s += `<${toHex(str)}> Tj\n`;
+      } else {
+        // ASCII 用 literal string，需转义括号和反斜杠
+        const safe = str.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+        s += `(${safe}) Tj\n`;
+      }
       if (bold) s += `0 Tr\n`;
       s += `ET\n`;
       return s;
@@ -346,18 +358,21 @@ Page({
     // obj 2: Pages
     addObj(`<< /Type /Pages /Kids [3 0 R] /Count 1 >>`);
 
-    // obj 3: Page（引用 F1 字体）
-    addObj(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>`);
+    // obj 3: Page（F1=楷体 CIDFont, F2=Arial）
+    addObj(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 7 0 R >> >> >>`);
 
     // obj 4: Content stream
     const streamBytes = gfx;
     addObj(`<< /Length ${streamBytes.length} >>\nstream\n${streamBytes}\nendstream`);
 
-    // obj 5: Type0 复合字体（支持中文），使用 STSong-Light + UniGB-UCS2-H CMap
-    addObj(`<< /Type /Font /Subtype /Type0 /BaseFont /STSong-Light /Encoding /UniGB-UCS2-H /DescendantFonts [6 0 R] >>`);
+    // obj 5: Type0 复合字体（楷体），使用 STKaiti + UniGB-UCS2-H CMap
+    addObj(`<< /Type /Font /Subtype /Type0 /BaseFont /STKaiti-Regular /Encoding /UniGB-UCS2-H /DescendantFonts [6 0 R] >>`);
 
-    // obj 6: CIDFont 子字体（DW=1000 全角默认宽度，W 指定 ASCII 半角宽度 500）
-    addObj(`<< /Type /Font /Subtype /CIDFontType0 /BaseFont /STSong-Light /DW 1000 /W [1 95 500] /CIDSystemInfo << /Registry (Adobe) /Ordering (GB1) /Supplement 2 >> >>`);
+    // obj 6: CIDFont 子字体（楷体，DW=1000 全角默认宽度，W 指定 ASCII 半角宽度 500）
+    addObj(`<< /Type /Font /Subtype /CIDFontType0 /BaseFont /STKaiti-Regular /DW 1000 /W [1 95 500] /CIDSystemInfo << /Registry (Adobe) /Ordering (GB1) /Supplement 2 >> >>`);
+
+    // obj 7: Arial（Type1，Helvetica 是 Arial 的 PDF 标准等价字体）
+    addObj(`<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>`);
 
     // ── 组装 PDF 文件 ──
     let pdf = '%PDF-1.4\n';
