@@ -76,6 +76,22 @@
   </view>
 
   <view class="menu-section">
+    <text class="menu-title">🔗 分享</text>
+    <view class="menu-card">
+      <button class="menu-item share-btn" open-type="share">
+        <view class="menu-icon-wrap" style="background: #EEF7FF;">
+          <text class="menu-icon">💬</text>
+        </view>
+        <view class="menu-text">
+          <text class="menu-name">分享给朋友</text>
+          <text class="menu-desc">推荐给朋友一起使用</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="menu-section">
     <text class="menu-title">ℹ️ 关于</text>
     <view class="menu-card">
       <view class="menu-item">

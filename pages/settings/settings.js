@@ -131,4 +131,11 @@ Page({
       }
     });
   },
+
+  onShareAppMessage() {
+    return {
+      title: '每日任务清单 - 专为小学生设计的任务管理工具',
+      path: '/pages/index/index',
+    };
+  },
 });
