@@ -35,13 +35,6 @@
     </view>
   </view>
 
-  <!-- Canvas（隐藏，用于生成PDF图片） -->
-  <canvas
-    id="pdfCanvas"
-    type="2d"
-    style="position: fixed; left: -9999px; top: -9999px; width: 375px; height: 800px;"
-  ></canvas>
-
   <!-- ─── 功能菜单 ─── -->
   <view class="menu-section">
     <text class="menu-title">📤 导出</text>
