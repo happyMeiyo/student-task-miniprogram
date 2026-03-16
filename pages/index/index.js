@@ -227,6 +227,21 @@ Page({
   },
 
   drawCanvas(ctx, W, H, tasks, subCompletedIds, studentName, todayDate, weekday, progress) {
+    // 兼容不支持 roundRect 的环境
+    const roundRectPath = (ctx, x, y, w, h, r) => {
+      if (typeof r === 'number') r = [r, r, r, r];
+      const [tl, tr, br, bl] = r;
+      ctx.moveTo(x + tl, y);
+      ctx.lineTo(x + w - tr, y);
+      ctx.arcTo(x + w, y, x + w, y + tr, tr);
+      ctx.lineTo(x + w, y + h - br);
+      ctx.arcTo(x + w, y + h, x + w - br, y + h, br);
+      ctx.lineTo(x + bl, y + h);
+      ctx.arcTo(x, y + h, x, y + h - bl, bl);
+      ctx.lineTo(x, y + tl);
+      ctx.arcTo(x, y, x + tl, y, tl);
+      ctx.closePath();
+    };
     const colors = { hw: '#FF7F7F', study: '#B57BEE', exercise: '#FFAC6A', default: '#6EC6F5' };
 
     // 背景
@@ -260,13 +275,13 @@ Page({
     // 进度条背景
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.beginPath();
-    ctx.roundRect(60, 185, W - 120, 20, 10);
+    roundRectPath(ctx,60, 185, W - 120, 20, 10);
     ctx.fill();
 
     // 进度条
     ctx.fillStyle = '#FFD95A';
     ctx.beginPath();
-    ctx.roundRect(60, 185, (W - 120) * (progress / 100), 20, 10);
+    roundRectPath(ctx,60, 185, (W - 120) * (progress / 100), 20, 10);
     ctx.fill();
 
     // 任务列表
@@ -278,14 +293,14 @@ Page({
       ctx.shadowBlur = 16;
       ctx.shadowOffsetY = 4;
       ctx.beginPath();
-      ctx.roundRect(30, y, W - 60, 100 + (task.subTasks ? task.subTasks.length * 64 : 0), 20);
+      roundRectPath(ctx,30, y, W - 60, 100 + (task.subTasks ? task.subTasks.length * 64 : 0), 20);
       ctx.fill();
       ctx.shadowColor = 'transparent';
 
       // 左色条
       ctx.fillStyle = task.color || '#6EC6F5';
       ctx.beginPath();
-      ctx.roundRect(30, y, 10, 100 + (task.subTasks ? task.subTasks.length * 64 : 0), [20, 0, 0, 20]);
+      roundRectPath(ctx,30, y, 10, 100 + (task.subTasks ? task.subTasks.length * 64 : 0), [20, 0, 0, 20]);
       ctx.fill();
 
       // 任务名
