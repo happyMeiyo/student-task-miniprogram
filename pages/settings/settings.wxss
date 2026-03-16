@@ -133,13 +133,14 @@
 
 .menu-arrow { font-size: 40rpx; color: #CCCCCC; }
 
-.share-btn {
-  display: flex; align-items: center; gap: 20rpx;
-  margin: 0; padding: 24rpx; line-height: inherit;
-  background: none; border: none; text-align: left;
-  width: 100%; box-sizing: border-box;
+.share-btn-reset {
+  margin: 0; padding: 0; border: none;
+  background: none; line-height: inherit;
+  text-align: left; width: 100%;
+  font-size: inherit; font-weight: inherit;
+  color: inherit;
 }
-.share-btn::after { display: none; }
+.share-btn-reset::after { display: none; }
 
 .danger-text { color: #FF7F7F !important; }
 
