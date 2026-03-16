@@ -89,7 +89,6 @@ Page({
       subCompletedIds = subCompletedIds.filter(id => id !== subId);
     } else {
       subCompletedIds.push(subId);
-      wx.vibrateShort({ type: 'light' });
     }
 
     // 检查主任务是否全部完成
