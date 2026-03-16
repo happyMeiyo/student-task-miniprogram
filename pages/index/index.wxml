@@ -84,7 +84,7 @@
           data-task-id="{{task.id}}"
           data-sub-id="{{sub.id}}"
         >
-          <view class="subtask-check {{subCompletedIds.indexOf(sub.id) !== -1 ? 'checked' : ''}}" style="border-color: {{task.color}}; {{subCompletedIds.indexOf(sub.id) !== -1 ? 'background:' + task.color + ';' : ''}}">
+          <view class="subtask-check {{subCompletedIds.indexOf(sub.id) !== -1 ? 'checked' : ''}}" style="{{subCompletedIds.indexOf(sub.id) !== -1 ? 'background:' + task.color + '; border-color:' + task.color + ';' : ''}}">
             <text class="check-icon" wx:if="{{subCompletedIds.indexOf(sub.id) !== -1}}">✓</text>
           </view>
           <text class="subtask-name">{{sub.name}}</text>
