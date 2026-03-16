@@ -16,6 +16,9 @@ Page({
     pct: 0,
     totalSub: 0,
     doneSub: 0,
+    taskList: [],      // 带 selected 字段的任务列表
+    selectedCount: 0,  // 已选任务数
+    allSelected: true,  // 是否全选
   },
 
   onLoad() {
@@ -36,18 +39,60 @@ Page({
       wx.removeStorageSync('pendingExportData');
     }
 
-    // 计算统计数据
+    // 构建带 selected 字段的任务列表（默认全选）
     const { studentName, dateStr, tasks, completedSubIds } = this._exportData;
+    const taskList = (tasks || []).map((t, i) => ({ ...t, _index: i, selected: true }));
+
+    this.setData({
+      exportData: this._exportData,
+      studentName,
+      dateStr,
+      taskList,
+      selectedCount: taskList.length,
+      allSelected: true,
+    });
+    this._updateStats();
+  },
+
+  // 切换单个任务的选中状态
+  toggleTask(e) {
+    const idx = e.currentTarget.dataset.index;
+    const key = `taskList[${idx}].selected`;
+    const newVal = !this.data.taskList[idx].selected;
+    const selectedCount = this.data.selectedCount + (newVal ? 1 : -1);
+    this.setData({
+      [key]: newVal,
+      selectedCount,
+      allSelected: selectedCount === this.data.taskList.length,
+    });
+    this._updateStats();
+  },
+
+  // 全选 / 取消全选
+  toggleAll() {
+    const allSelected = !this.data.allSelected;
+    const taskList = this.data.taskList.map(t => ({ ...t, selected: allSelected }));
+    this.setData({
+      taskList,
+      allSelected,
+      selectedCount: allSelected ? taskList.length : 0,
+    });
+    this._updateStats();
+  },
+
+  // 根据选中任务重新计算统计
+  _updateStats() {
+    const { taskList } = this.data;
+    const completedSubIds = this._exportData.completedSubIds || [];
     let totalSub = 0, doneSub = 0;
-    (tasks || []).forEach(t => {
+    taskList.filter(t => t.selected).forEach(t => {
       (t.subTasks || []).forEach(s => {
         totalSub++;
-        if ((completedSubIds || []).includes(s.id)) doneSub++;
+        if (completedSubIds.includes(s.id)) doneSub++;
       });
     });
     const pct = totalSub > 0 ? Math.round(doneSub / totalSub * 100) : 0;
-
-    this.setData({ exportData: this._exportData, studentName, dateStr, pct, totalSub, doneSub });
+    this.setData({ pct, totalSub, doneSub });
   },
 
   goBack() {
@@ -56,13 +101,19 @@ Page({
 
   // ─── 核心导出逻辑 ───
   startExport() {
+    if (this.data.selectedCount === 0) {
+      wx.showToast({ title: '请至少选择一个任务', icon: 'none' });
+      return;
+    }
     this.setData({ status: 'building', statusText: '正在生成 PDF...', progress: 10 });
     setTimeout(() => this._buildAndOpenPDF(), 100);
   },
 
   _buildAndOpenPDF() {
     try {
-      const data = this._exportData;
+      // 只导出选中的任务
+      const selectedTasks = this.data.taskList.filter(t => t.selected);
+      const data = { ...this._exportData, tasks: selectedTasks };
       const pdfBytes = this._buildPDF(data);
 
       this.setData({ progress: 70, statusText: '写入文件...' });

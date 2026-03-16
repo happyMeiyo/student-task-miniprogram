@@ -43,13 +43,34 @@
       </view>
     </view>
 
-    <!-- PDF 内容说明 -->
-    <view class="info-card">
-      <text class="info-title">📋 PDF 将包含</text>
-      <view class="info-item"><text class="info-dot">•</text><text class="info-text">学生姓名、日期和完成进度</text></view>
-      <view class="info-item"><text class="info-dot">•</text><text class="info-text">每个主任务及其子任务列表</text></view>
-      <view class="info-item"><text class="info-dot">•</text><text class="info-text">每个子任务的完成状态（已勾选/未勾选）</text></view>
-      <view class="info-item"><text class="info-dot">•</text><text class="info-text">各任务预计用时</text></view>
+    <!-- 选择要导出的任务 -->
+    <view class="select-card">
+      <view class="select-header">
+        <text class="select-title">选择要导出的任务</text>
+        <view class="select-all-btn" bindtap="toggleAll">
+          <text class="select-all-text">{{allSelected ? '取消全选' : '全选'}}</text>
+        </view>
+      </view>
+      <view class="select-list">
+        <view
+          class="select-item {{item.selected ? 'selected' : ''}}"
+          wx:for="{{taskList}}"
+          wx:key="_index"
+          data-index="{{index}}"
+          bindtap="toggleTask"
+        >
+          <view class="select-checkbox {{item.selected ? 'checked' : ''}}" style="border-color:{{item.color || '#6EC6F5'}}; background:{{item.selected ? item.color || '#6EC6F5' : 'transparent'}};">
+            <text class="select-check-icon" wx:if="{{item.selected}}">✓</text>
+          </view>
+          <view class="select-item-info">
+            <text class="select-item-name">{{item.name}}</text>
+            <text class="select-item-detail">{{item.subTasks.length}} 个子任务 · 约{{item.estimatedTime}}分钟</text>
+          </view>
+        </view>
+      </view>
+      <view class="select-footer">
+        <text class="select-summary">已选 {{selectedCount}}/{{taskList.length}} 个任务</text>
+      </view>
     </view>
 
     <!-- 状态显示 -->
