@@ -70,8 +70,9 @@ Page({
     };
 
     wx.setStorageSync('tasks', tasks);
-    this.setData({ task: JSON.parse(JSON.stringify(tasks[idx])) });
-    wx.showToast({ title: '保存成功 ✅', icon: 'none' });
+    setTimeout(() => {
+      wx.navigateBack();
+    }, 500);
   },
 
   onNameInput(e) { this.setData({ editName: e.detail.value }); },
@@ -129,7 +130,6 @@ Page({
       task: JSON.parse(JSON.stringify(tasks[idx])),
       showAddSubModal: false,
     });
-    wx.showToast({ title: '已添加', icon: 'success' });
   },
 
   // 显示编辑子任务弹窗
@@ -196,7 +196,6 @@ Page({
         tasks[tIdx].subTasks = tasks[tIdx].subTasks.filter(s => s.id !== subId);
         wx.setStorageSync('tasks', tasks);
         this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
-        wx.showToast({ title: '已删除', icon: 'none' });
       }
     });
   },

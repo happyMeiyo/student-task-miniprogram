@@ -193,7 +193,6 @@ Page({
           tasks = tasks.filter(t => t.id !== taskId);
           wx.setStorageSync('tasks', tasks);
           this.loadData();
-          wx.showToast({ title: '已删除', icon: 'none' });
         }
       }
     });

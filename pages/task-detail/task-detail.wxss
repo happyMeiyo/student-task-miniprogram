@@ -36,16 +36,33 @@
   color: #fff;
 }
 
-.nav-save {
-  background: rgba(255,255,255,0.9);
-  border-radius: 30rpx;
-  padding: 12rpx 28rpx;
+.nav-placeholder {
+  width: 72rpx;
 }
 
-.nav-save-text {
-  font-size: 26rpx;
+/* ─── 吸底保存按钮 ─── */
+.save-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 32rpx calc(env(safe-area-inset-bottom) + 20rpx);
+  background: #FFFFFF;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.06);
+  z-index: 200;
+}
+
+.save-bottom-btn {
+  width: 100%;
+  padding: 24rpx 0;
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.save-bottom-text {
+  font-size: 30rpx;
   font-weight: 800;
-  color: #333;
+  color: #FFFFFF;
 }
 
 /* ─── 任务预览 ─── */

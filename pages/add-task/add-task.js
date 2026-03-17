@@ -85,8 +85,7 @@ Page({
     tasks.push(newTask);
     wx.setStorageSync('tasks', tasks);
 
-    wx.showToast({ title: '创建成功 🎉', icon: 'none', duration: 1500 });
-    setTimeout(() => wx.navigateBack(), 1000);
+    setTimeout(() => wx.navigateBack(), 500);
   },
 
   goBack() { wx.navigateBack(); },
