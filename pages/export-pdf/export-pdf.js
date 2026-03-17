@@ -257,16 +257,16 @@ Page({
     let gfx = '';
 
     // ── 顶部色块 ──
-    const headerH = 50;
+    const headerH = 75;
     gfx += `0.431 0.776 0.961 rg\n`; // #6EC6F5
     gfx += `${ML} ${y - headerH} ${W - ML - MR} ${headerH} re f\n`;
 
     // ── 标题：姓名 + 每日作业（左对齐），日期（右对齐） ──
     const title = (studentName || '') + ' 每日作业';
-    gfx += textLine(ML + 10, y - 32, 'F1', 18, 1, 1, 1, title, 0.8);
+    gfx += textLine(ML + 10, y - 48, 'F1', 27, 1, 1, 1, title, 0.8);
     const dateText = dateStr || '';
-    const dateWidth = estimateWidth(dateText, 10);
-    gfx += textLine(W - MR - 10 - dateWidth, y - 32, 'F1', 10, 1, 1, 1, dateText);
+    const dateWidth = estimateWidth(dateText, 15);
+    gfx += textLine(W - MR - 40 - dateWidth, y - 48, 'F1', 15, 1, 1, 1, dateText);
 
     y -= (headerH + 14);
 
@@ -286,7 +286,7 @@ Page({
 
     for (const task of (tasks || [])) {
       const subCount = (task.subTasks || []).length;
-      const cardH = 36 + subCount * 18 + 8;
+      const cardH = 52 + subCount * 27 + 12;
 
       if (y - cardH < PAGE_BOTTOM) break;
 
@@ -303,45 +303,45 @@ Page({
 
       // 任务名称（粗体）
       const taskDone = (task.subTasks || []).length > 0 && (task.subTasks || []).every(s => subDone.includes(s.id));
-      gfx += textLine(ML + 10, y - 16, 'F1', 11, 0.18, 0.18, 0.18, task.name || '', 0.4);
+      gfx += textLine(ML + 10, y - 24, 'F1', 16.5, 0.18, 0.18, 0.18, task.name || '', 0.4);
 
       if (taskDone) {
-        gfx += textLine(W - MR - 55, y - 16, 'F1', 9, 0.361, 0.788, 0.478, '已完成');
+        gfx += textLine(W - MR - 75, y - 24, 'F1', 13.5, 0.361, 0.788, 0.478, '已完成');
       }
 
       // 分割线
       gfx += `0.9 0.9 0.9 RG\n`;
       gfx += `0.5 w\n`;
-      gfx += `${ML + 6} ${y - 32} m ${W - MR - 6} ${y - 32} l S\n`;
+      gfx += `${ML + 6} ${y - 46} m ${W - MR - 6} ${y - 46} l S\n`;
 
       // 子任务
-      let sy = y - 44;
+      let sy = y - 62;
       for (const sub of (task.subTasks || [])) {
         const done = subDone.includes(sub.id);
 
         if (done) {
           gfx += `${colorStr} rg\n`;
-          gfx += `${ML + 14} ${sy - 3} 7 7 re f\n`;
+          gfx += `${ML + 14} ${sy - 4.75} 10.5 10.5 re f\n`;
           gfx += `1 1 1 RG\n`;
-          gfx += `1 w\n`;
-          gfx += `${ML + 15.5} ${sy} m ${ML + 17} ${sy + 2} l ${ML + 20} ${sy - 2} l S\n`;
+          gfx += `1.5 w\n`;
+          gfx += `${ML + 16.25} ${sy - 0.25} m ${ML + 18.5} ${sy + 2.75} l ${ML + 23} ${sy - 3.25} l S\n`;
         } else {
           gfx += `0.8 0.8 0.8 RG\n`;
-          gfx += `0.5 w\n`;
-          gfx += `${ML + 14} ${sy - 3} 7 7 re S\n`;
+          gfx += `0.75 w\n`;
+          gfx += `${ML + 14} ${sy - 4.75} 10.5 10.5 re S\n`;
         }
 
         // 子任务名
         const subColor = done ? [0.66, 0.66, 0.66] : [0.33, 0.33, 0.33];
-        gfx += textLine(ML + 25, sy, 'F1', 9, subColor[0], subColor[1], subColor[2], sub.name || '');
-        sy -= 18;
+        gfx += textLine(ML + 29, sy, 'F1', 13.5, subColor[0], subColor[1], subColor[2], sub.name || '');
+        sy -= 27;
       }
 
       y = cardY - 6;
     }
 
     // 页脚
-    gfx += textLine(W / 2 - 80, 30, 'F1', 8, 0.75, 0.75, 0.75, '每日任务清单  |  ' + (dateStr || ''));
+    gfx += textLine(W / 2 - 100, 30, 'F1', 12, 0.75, 0.75, 0.75, '每日任务清单  |  ' + (dateStr || ''));
 
     // ── 构建 PDF 对象 ──
     const objects = [];
