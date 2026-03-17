@@ -312,23 +312,23 @@ Page({
       // 分割线
       gfx += `0.9 0.9 0.9 RG\n`;
       gfx += `0.5 w\n`;
-      gfx += `${ML + 6} ${y - 46} m ${W - MR - 6} ${y - 46} l S\n`;
+      gfx += `${ML + 6} ${y - 34} m ${W - MR - 6} ${y - 34} l S\n`;
 
       // 子任务
-      let sy = y - 62;
+      let sy = y - 60;
       for (const sub of (task.subTasks || [])) {
         const done = subDone.includes(sub.id);
 
         if (done) {
           gfx += `${colorStr} rg\n`;
-          gfx += `${ML + 14} ${sy - 4.75} 10.5 10.5 re f\n`;
+          gfx += `${ML + 14} ${sy} 10.5 10.5 re f\n`;
           gfx += `1 1 1 RG\n`;
           gfx += `1.5 w\n`;
-          gfx += `${ML + 16.25} ${sy - 0.25} m ${ML + 18.5} ${sy + 2.75} l ${ML + 23} ${sy - 3.25} l S\n`;
+          gfx += `${ML + 16.25} ${sy + 4.5} m ${ML + 18.5} ${sy + 7.5} l ${ML + 23} ${sy + 1.5} l S\n`;
         } else {
           gfx += `0.8 0.8 0.8 RG\n`;
           gfx += `0.75 w\n`;
-          gfx += `${ML + 14} ${sy - 4.75} 10.5 10.5 re S\n`;
+          gfx += `${ML + 14} ${sy} 10.5 10.5 re S\n`;
         }
 
         // 子任务名

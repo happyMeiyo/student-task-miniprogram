@@ -97,10 +97,6 @@
       <view class="btn-export btn-retry" bindtap="startExport" wx:if="{{status === 'done'}}">
         <text class="btn-export-text">🔄 重新生成</text>
       </view>
-
-      <view class="btn-share" bindtap="shareFile" wx:if="{{status === 'done'}}">
-        <text class="btn-share-text">📤 分享给家长 / 老师</text>
-      </view>
     </view>
 
     <!-- 提示说明 -->
