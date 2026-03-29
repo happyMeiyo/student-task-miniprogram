@@ -1,6 +1,12 @@
 // app.js
 App({
+  _syncTimer: null,
+
   onLaunch() {
+    // 初始化云开发
+    if (wx.cloud) {
+      wx.cloud.init({ env: 'cloud1-2g3wr08heebc2fa4', traceUser: true });
+    }
     // 初始化默认任务数据
     const tasks = wx.getStorageSync('tasks');
     if (!tasks || tasks.length === 0) {
@@ -105,6 +111,8 @@ App({
       wx.setStorageSync('studentName', '同学');
     }
 
+    // 启动时自动从云端同步
+    this.cloudSync();
   },
 
   // 清理超过7天的每日记录
@@ -142,6 +150,76 @@ App({
 
   generateId() {
     return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  },
+
+  // ─── 云同步 ───
+
+  // 收集本地数据
+  _collectLocalData() {
+    const tasks = wx.getStorageSync('tasks') || [];
+    const studentName = wx.getStorageSync('studentName') || '同学';
+    const dailyRecords = {};
+    try {
+      const keys = wx.getStorageInfoSync().keys || [];
+      keys.forEach(k => {
+        if (k.indexOf('dailyRecord_') === 0) {
+          dailyRecords[k] = wx.getStorageSync(k);
+        }
+      });
+    } catch (e) {}
+    return { tasks, studentName, dailyRecords, updatedAt: Date.now() };
+  },
+
+  // 将云端数据写入本地
+  _applyCloudData(data) {
+    if (!data) return;
+    if (data.tasks && data.tasks.length > 0) wx.setStorageSync('tasks', data.tasks);
+    if (data.studentName) wx.setStorageSync('studentName', data.studentName);
+    if (data.dailyRecords) {
+      const keys = Object.keys(data.dailyRecords);
+      for (let i = 0; i < keys.length; i++) {
+        wx.setStorageSync(keys[i], data.dailyRecords[keys[i]]);
+      }
+    }
+  },
+
+  // 启动同步：比较时间戳，取最新数据
+  cloudSync(callback) {
+    if (!wx.cloud) { callback && callback('unsupported'); return; }
+    const db = wx.cloud.database();
+    const col = db.collection('user_data');
+    const localData = this._collectLocalData();
+    const that = this;
+
+    col.where({ _openid: '{openid}' }).get({
+      success(res) {
+        if (res.data && res.data.length > 0) {
+          const cloud = res.data[0];
+          if (cloud.updatedAt && cloud.updatedAt > localData.updatedAt) {
+            // 云端更新 → 下载
+            that._applyCloudData(cloud);
+            callback && callback('downloaded');
+          } else {
+            // 本地更新 → 上传
+            col.doc(cloud._id).update({ data: localData, success() { callback && callback('uploaded'); }, fail() { callback && callback('error'); } });
+          }
+        } else {
+          // 云端无数据 → 新建
+          col.add({ data: localData, success() { callback && callback('uploaded'); }, fail() { callback && callback('error'); } });
+        }
+      },
+      fail() { callback && callback('error'); }
+    });
+  },
+
+  // 数据变更时延迟 3 秒上传（防抖）
+  notifyDataChange() {
+    if (!wx.cloud) return;
+    if (this._syncTimer) clearTimeout(this._syncTimer);
+    const that = this;
+    this._syncTimer = setTimeout(function () {
+      that.cloudSync();
+    }, 3000);
   },
 
   globalData: {

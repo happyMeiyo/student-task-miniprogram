@@ -84,6 +84,7 @@ Page({
     let tasks = wx.getStorageSync('tasks') || [];
     tasks.push(newTask);
     wx.setStorageSync('tasks', tasks);
+    app.notifyDataChange();
 
 
     setTimeout(() => wx.navigateBack(), 500);

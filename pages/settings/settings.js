@@ -61,7 +61,7 @@ Page({
       return;
     }
     wx.setStorageSync('studentName', tempName.trim());
-
+    app.notifyDataChange();
     this.setData({ studentName: tempName.trim(), editingName: false });
     wx.showToast({ title: '保存成功', icon: 'success' });
   },
@@ -127,6 +127,24 @@ Page({
           this.loadData();
           wx.showToast({ title: '已恢复默认', icon: 'success' });
         }
+      }
+    });
+  },
+
+  syncData() {
+    const that = this;
+    wx.showLoading({ title: '同步中...' });
+    app.cloudSync(function (result) {
+      wx.hideLoading();
+      if (result === 'downloaded') {
+        that.loadData();
+        wx.showToast({ title: '已同步云端数据', icon: 'success' });
+      } else if (result === 'uploaded') {
+        wx.showToast({ title: '已上传到云端', icon: 'success' });
+      } else if (result === 'synced') {
+        wx.showToast({ title: '数据已是最新', icon: 'success' });
+      } else {
+        wx.showToast({ title: '同步失败，请检查网络', icon: 'none' });
       }
     });
   },

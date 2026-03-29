@@ -69,6 +69,22 @@
   </view>
 
   <view class="menu-section">
+    <text class="menu-title">☁️ 云同步</text>
+    <view class="menu-card">
+      <view class="menu-item" hover-class="menu-item-hover" bindtap="syncData">
+        <view class="menu-icon-wrap" style="background: #E8F7FF;">
+          <text class="menu-icon">🔄</text>
+        </view>
+        <view class="menu-text">
+          <text class="menu-name">同步任务数据</text>
+          <text class="menu-desc">跨设备同步，换手机也不丢数据</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="menu-section">
     <text class="menu-title">ℹ️ 关于</text>
     <view class="menu-card">
       <view class="menu-item">

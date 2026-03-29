@@ -192,6 +192,7 @@ Page({
 
     var record = { completedIds: completedIds, subCompletedIds: subCompletedIds, tasks: tasks };
     wx.setStorageSync('dailyRecord_' + today, record);
+    app.notifyDataChange();
 
 
     var subDoneMap = {};
@@ -233,7 +234,7 @@ Page({
             if (tasks[i].id !== taskId) newTasks.push(tasks[i]);
           }
           wx.setStorageSync('tasks', newTasks);
-      
+          app.notifyDataChange();
           that.loadData(that._selectedDateKey);
         }
       }
