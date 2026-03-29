@@ -12,68 +12,6 @@ page {
   background: #FFF8EC;
 }
 
-/* ─── 卡片 ─── */
-.card {
-  background: #FFFFFF;
-  border-radius: 24rpx;
-  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06);
-  overflow: hidden;
-}
-
-/* ─── 按钮 ─── */
-.btn-primary {
-  background: linear-gradient(135deg, #6EC6F5, #5BB8E8);
-  color: #fff;
-  border-radius: 50rpx;
-  padding: 20rpx 40rpx;
-  font-size: 30rpx;
-  font-weight: 700;
-  border: none;
-  box-shadow: 0 6rpx 20rpx rgba(110,198,245,0.4);
-}
-
-.btn-danger {
-  background: linear-gradient(135deg, #FF7F7F, #FF6B6B);
-  color: #fff;
-  border-radius: 50rpx;
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-  font-weight: 700;
-  border: none;
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 2rpx solid #E0E0E0;
-  color: #666;
-  border-radius: 50rpx;
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-}
-
-/* ─── 输入框 ─── */
-.input-field {
-  background: #F7F7F7;
-  border-radius: 16rpx;
-  padding: 20rpx 24rpx;
-  font-size: 28rpx;
-  color: #2D2D2D;
-  border: 2rpx solid transparent;
-}
-.input-field:focus {
-  border-color: #6EC6F5;
-  background: #fff;
-}
-
-/* ─── Flex 工具类 ─── */
-.flex { display: flex; }
-.flex-center { display: flex; align-items: center; justify-content: center; }
-.flex-between { display: flex; align-items: center; justify-content: space-between; }
-.flex-col { display: flex; flex-direction: column; }
-.gap-8 { gap: 8rpx; }
-.gap-16 { gap: 16rpx; }
-.gap-24 { gap: 24rpx; }
-
 /* ─── 空状态 ─── */
 .empty-state {
   display: flex;
@@ -83,33 +21,4 @@ page {
   padding: 80rpx 40rpx;
 }
 .empty-icon { font-size: 100rpx; margin-bottom: 20rpx; }
-.empty-text { font-size: 28rpx; color: #AAAAAA; }
-
-/* ─── 徽章 ─── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #FF7F7F;
-  color: #fff;
-  border-radius: 20rpx;
-  padding: 4rpx 14rpx;
-  font-size: 22rpx;
-  font-weight: 700;
-  min-width: 36rpx;
-}
-
-/* ─── 分割线 ─── */
-.divider {
-  height: 2rpx;
-  background: #F0F0F0;
-  margin: 16rpx 0;
-}
-
-/* ─── 动画 ─── */
-@keyframes bounce-in {
-  0% { transform: scale(0.8); opacity: 0; }
-  60% { transform: scale(1.05); }
-  100% { transform: scale(1); opacity: 1; }
-}
-.bounce-in { animation: bounce-in 0.3s ease; }
+.empty-text { font-size: 28rpx; color: #666666; }

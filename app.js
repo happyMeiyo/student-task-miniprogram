@@ -80,18 +80,54 @@ App({
       wx.setStorageSync('tasks', defaultTasks);
     }
 
-    // 初始化每日记录
+    // 初始化每日记录（含当天任务快照）
     const today = this.getTodayKey();
+    const currentTasks = wx.getStorageSync('tasks') || [];
     const dailyRecord = wx.getStorageSync('dailyRecord_' + today);
     if (!dailyRecord) {
-      wx.setStorageSync('dailyRecord_' + today, { completedIds: [], subCompletedIds: [] });
+      wx.setStorageSync('dailyRecord_' + today, {
+        completedIds: [],
+        subCompletedIds: [],
+        tasks: currentTasks,
+      });
+    } else if (!dailyRecord.tasks) {
+      // 兼容旧记录：补充任务快照
+      dailyRecord.tasks = currentTasks;
+      wx.setStorageSync('dailyRecord_' + today, dailyRecord);
     }
+
+    // 清理超过7天的旧记录
+    this.cleanupOldRecords();
 
     // 学生名字
     const studentName = wx.getStorageSync('studentName');
     if (!studentName) {
       wx.setStorageSync('studentName', '同学');
     }
+
+  },
+
+  // 清理超过7天的每日记录
+  cleanupOldRecords() {
+    const keys = wx.getStorageInfoSync().keys || [];
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 7);
+    cutoff.setHours(0, 0, 0, 0);
+
+    keys.forEach(key => {
+      if (key.startsWith('dailyRecord_')) {
+        const dateStr = key.replace('dailyRecord_', '');
+        const d = new Date(dateStr);
+        if (!isNaN(d.getTime()) && d < cutoff) {
+          wx.removeStorageSync(key);
+        }
+      }
+    });
+  },
+
+  // 获取指定日期的 key
+  getDateKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   },
 
   getTodayKey() {

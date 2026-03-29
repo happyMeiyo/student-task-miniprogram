@@ -26,15 +26,15 @@
 .preview-icon-text { font-size: 64rpx; }
 .preview-info { flex: 1; }
 .preview-name { display: block; font-size: 30rpx; font-weight: 800; color: #2D2D2D; margin-bottom: 6rpx; }
-.preview-date { font-size: 24rpx; color: #AAA; }
+.preview-date { font-size: 24rpx; color: #666666; }
 
 .preview-stats { display: flex; align-items: center; margin-bottom: 20rpx; }
 .stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6rpx; }
 .stat-num { font-size: 44rpx; font-weight: 900; }
-.stat-num.blue { color: #6EC6F5; }
+.stat-num.blue { color: #2EA7D8; }
 .stat-num.green { color: #5CC97A; }
 .stat-num.purple { color: #B57BEE; }
-.stat-label { font-size: 22rpx; color: #AAA; }
+.stat-label { font-size: 22rpx; color: #666666; }
 .stat-divider { width: 2rpx; height: 60rpx; background: #F0F0F0; }
 
 .progress-bar-bg { height: 16rpx; background: #F0F0F0; border-radius: 8rpx; overflow: hidden; }
@@ -57,7 +57,7 @@
   padding: 8rpx 20rpx; border-radius: 20rpx;
   background: #F0F8FF; border: 2rpx solid #6EC6F5;
 }
-.select-all-text { font-size: 24rpx; color: #6EC6F5; font-weight: 600; }
+.select-all-text { font-size: 24rpx; color: #2EA7D8; font-weight: 600; }
 
 .select-list { display: flex; flex-direction: column; gap: 12rpx; }
 .select-item {
@@ -80,10 +80,10 @@
   display: block; font-size: 26rpx; font-weight: 700;
   color: #2D2D2D; margin-bottom: 4rpx;
 }
-.select-item-detail { font-size: 22rpx; color: #AAA; }
+.select-item-detail { font-size: 22rpx; color: #666666; }
 
 .select-footer { margin-top: 16rpx; text-align: center; }
-.select-summary { font-size: 24rpx; color: #999; }
+.select-summary { font-size: 24rpx; color: #555555; }
 
 /* 状态卡片 */
 .status-card {
@@ -93,7 +93,7 @@
 }
 .status-icon-text { font-size: 60rpx; }
 .status-icon-text.red { color: #FF7F7F; }
-.status-text { font-size: 28rpx; color: #555; text-align: center; }
+.status-text { font-size: 28rpx; color: #333333; text-align: center; }
 
 /* Loading 环 */
 .loading-ring {
@@ -122,7 +122,7 @@
   background: #fff; border-radius: 24rpx; padding: 28rpx;
   text-align: center; border: 3rpx solid #6EC6F5;
 }
-.btn-share-text { font-size: 28rpx; font-weight: 700; color: #6EC6F5; }
+.btn-share-text { font-size: 28rpx; font-weight: 700; color: #2EA7D8; }
 
 /* 提示 */
 .tip-card {
@@ -130,4 +130,4 @@
   display: flex; align-items: flex-start; gap: 12rpx;
 }
 .tip-icon { font-size: 28rpx; }
-.tip-text { font-size: 24rpx; color: #6EC6F5; line-height: 1.7; flex: 1; }
+.tip-text { font-size: 24rpx; color: #2EA7D8; line-height: 1.7; flex: 1; }

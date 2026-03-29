@@ -109,7 +109,7 @@
 .section-label {
   display: block;
   font-size: 24rpx;
-  color: #AAAAAA;
+  color: #666666;
   margin-bottom: 16rpx;
 }
 
@@ -165,7 +165,7 @@
 .form-label {
   display: block;
   font-size: 24rpx;
-  color: #888888;
+  color: #555555;
   margin-bottom: 10rpx;
   font-weight: 600;
 }
@@ -231,7 +231,7 @@
 
 .add-sub-text {
   font-size: 24rpx;
-  color: #6EC6F5;
+  color: #2EA7D8;
   font-weight: 700;
 }
 
@@ -275,7 +275,7 @@
 
 .sub-time {
   font-size: 22rpx;
-  color: #BBBBBB;
+  color: #777777;
 }
 
 .sub-actions {
@@ -297,7 +297,7 @@
 
 .sub-move-icon {
   font-size: 26rpx;
-  color: #888888;
+  color: #444444;
 }
 
 .sub-edit-btn {
@@ -312,7 +312,7 @@
 
 .sub-edit-icon {
   font-size: 28rpx;
-  color: #6EC6F5;
+  color: #2EA7D8;
 }
 
 .sub-del-btn {
@@ -336,7 +336,7 @@
 
 .sub-empty-text {
   font-size: 26rpx;
-  color: #CCCCCC;
+  color: #888888;
 }
 
 /* ─── 弹窗 ─── */
@@ -388,7 +388,7 @@
 
 .modal-cancel {
   background: #F0F0F0;
-  color: #888888;
+  color: #555555;
 }
 
 .modal-confirm {

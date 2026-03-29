@@ -85,6 +85,7 @@ Page({
     tasks.push(newTask);
     wx.setStorageSync('tasks', tasks);
 
+
     setTimeout(() => wx.navigateBack(), 500);
   },
 

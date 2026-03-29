@@ -15,7 +15,6 @@ Page({
     progress: 0,
     editingName: false,
     tempName: '',
-    exporting: false,
   },
 
   onShow() {
@@ -42,7 +41,6 @@ Page({
       studentName,
       totalTasks: tasks.length,
       completedToday: completedSub,
-      totalSub,
       progress,
       tempName: studentName,
     });
@@ -63,6 +61,7 @@ Page({
       return;
     }
     wx.setStorageSync('studentName', tempName.trim());
+
     this.setData({ studentName: tempName.trim(), editingName: false });
     wx.showToast({ title: '保存成功', icon: 'success' });
   },

@@ -40,7 +40,7 @@
 
     <view class="form-item">
       <text class="form-label">任务名称 *</text>
-      <input class="form-input" value="{{name}}" placeholder="如：语文作业、阅读..." bindinput="onNameInput" maxlength="20" />
+      <input class="form-input" value="{{name}}" placeholder="如：语文作业、阅读..." bindinput="onNameInput" maxlength="100" />
     </view>
 
     <view class="form-item">
@@ -124,7 +124,7 @@
       <text class="modal-title">添加子任务</text>
       <view class="modal-form">
         <text class="form-label">子任务名称</text>
-        <input class="form-input" value="{{newSubName}}" placeholder="如：抄写生字..." bindinput="onNewSubNameInput" focus="{{showAddSubModal}}" maxlength="30" />
+        <input class="form-input" value="{{newSubName}}" placeholder="如：抄写生字..." bindinput="onNewSubNameInput" focus="{{showAddSubModal}}" maxlength="100" />
       </view>
       <view class="modal-form">
         <text class="form-label">预计时间（分钟）</text>

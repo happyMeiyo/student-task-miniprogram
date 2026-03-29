@@ -70,6 +70,7 @@ Page({
     };
 
     wx.setStorageSync('tasks', tasks);
+
     setTimeout(() => {
       wx.navigateBack();
     }, 500);
@@ -126,6 +127,7 @@ Page({
     tasks[idx].subTasks.push(newSub);
     wx.setStorageSync('tasks', tasks);
 
+
     this.setData({
       task: JSON.parse(JSON.stringify(tasks[idx])),
       showAddSubModal: false,
@@ -173,6 +175,7 @@ Page({
     };
 
     wx.setStorageSync('tasks', tasks);
+
     this.setData({
       task: JSON.parse(JSON.stringify(tasks[tIdx])),
       showSubEditModal: false,
@@ -195,6 +198,7 @@ Page({
         if (tIdx === -1) return;
         tasks[tIdx].subTasks = tasks[tIdx].subTasks.filter(s => s.id !== subId);
         wx.setStorageSync('tasks', tasks);
+
         this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
       }
     });
@@ -212,6 +216,7 @@ Page({
     if (idx <= 0) return;
     [subs[idx - 1], subs[idx]] = [subs[idx], subs[idx - 1]];
     wx.setStorageSync('tasks', tasks);
+
     this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
   },
 
@@ -227,6 +232,7 @@ Page({
     if (idx >= subs.length - 1) return;
     [subs[idx], subs[idx + 1]] = [subs[idx + 1], subs[idx]];
     wx.setStorageSync('tasks', tasks);
+
     this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
   },
 

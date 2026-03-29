@@ -45,7 +45,7 @@
         class="form-input"
         value="{{editName}}"
         placeholder="请输入任务名称"
-        maxlength="20"
+        maxlength="100"
         bindinput="onNameInput"
       />
     </view>
@@ -142,7 +142,7 @@
           class="form-input"
           value="{{newSubName}}"
           placeholder="如：抄写生字、背单词..."
-          maxlength="30"
+          maxlength="100"
           bindinput="onNewSubNameInput"
           focus="{{showAddSubModal}}"
         />
@@ -177,7 +177,7 @@
           class="form-input"
           value="{{editSubName}}"
           placeholder="子任务名称"
-          maxlength="30"
+          maxlength="100"
           bindinput="onEditSubNameInput"
           focus="{{showSubEditModal}}"
         />

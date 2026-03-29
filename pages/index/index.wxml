@@ -10,13 +10,19 @@
           <text class="greeting">{{greeting}}，{{studentName}} 👋</text>
           <text class="date-text">{{todayDate}} {{weekday}}</text>
         </view>
-        <view class="header-actions">
-          <view class="icon-btn" bindtap="showExport">
-            <text class="icon-btn-text">导出</text>
-          </view>
-          <view class="icon-btn icon-btn-reset" bindtap="resetToday">
-            <text class="icon-btn-text">重置</text>
-          </view>
+      </view>
+
+      <!-- 7天日期选择（今天在最右） -->
+      <view class="date-tabs">
+        <view
+          class="date-tab {{item.selected ? 'date-tab-active' : ''}} {{item.hasRecord ? 'date-tab-has-record' : ''}}"
+          wx:for="{{dateTabs}}"
+          wx:key="key"
+          bindtap="switchDate"
+          data-key="{{item.key}}"
+        >
+          <text class="date-tab-weekday">{{item.weekday}}</text>
+          <view class="date-tab-dot" wx:if="{{item.hasRecord && !item.selected}}"></view>
         </view>
       </view>
 
@@ -24,7 +30,15 @@
       <view class="progress-card">
         <view class="progress-info">
           <view>
-            <text class="progress-title">今日完成进度</text>
+            <view class="progress-title-row">
+              <text class="progress-title">{{isToday ? '今日完成进度' : todayDate + ' 完成记录'}}</text>
+              <button class="share-icon-btn" open-type="share" wx:if="{{isToday}}">
+                <view class="share-box-icon">
+                  <view class="share-box-arrow"></view>
+                  <view class="share-box-rect"></view>
+                </view>
+              </button>
+            </view>
             <text class="progress-sub">{{completedSubTasks}}/{{totalSubTasks}} 个小任务</text>
           </view>
           <text class="progress-percent">{{progress}}%</text>
@@ -35,11 +49,18 @@
           </view>
         </view>
         <view class="progress-emoji">
-          <text wx:if="{{progress === 100}}">🏆 全部完成！太棒了！</text>
-          <text wx:elif="{{progress >= 80}}">🌟 快完成了，加油！</text>
-          <text wx:elif="{{progress >= 50}}">💪 已完成一半，继续！</text>
-          <text wx:elif="{{progress > 0}}">🚀 已经开始啦！</text>
-          <text wx:else>✨ 点击任务开始今天的学习</text>
+          <block wx:if="{{isToday}}">
+            <text wx:if="{{progress === 100}}">🏆 全部完成！太棒了！</text>
+            <text wx:elif="{{progress >= 80}}">🌟 快完成了，加油！</text>
+            <text wx:elif="{{progress >= 50}}">💪 已完成一半，继续！</text>
+            <text wx:elif="{{progress > 0}}">🚀 已经开始啦！</text>
+            <text wx:else>✨ 点击任务开始今天的学习</text>
+          </block>
+          <block wx:else>
+            <text wx:if="{{progress === 100}}">🏆 当天全部完成！</text>
+            <text wx:elif="{{progress > 0}}">📋 当天完成了 {{progress}}%</text>
+            <text wx:else>📋 当天没有完成记录</text>
+          </block>
         </view>
       </view>
     </view>
@@ -98,14 +119,20 @@
       </view>
     </view>
 
-    <!-- 空状态 -->
-    <view class="empty-state" wx:if="{{tasks.length === 0}}">
+    <!-- 空状态：今天 -->
+    <view class="empty-state" wx:if="{{tasks.length === 0 && isToday}}">
       <text class="empty-icon">📋</text>
       <text class="empty-text">还没有任务，快去添加吧！</text>
     </view>
 
-    <!-- 添加任务按钮 -->
-    <view class="add-task-btn" bindtap="goToAddTask">
+    <!-- 空状态：历史日期无记录 -->
+    <view class="empty-state" wx:if="{{tasks.length === 0 && !isToday}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">当天没有任务记录</text>
+    </view>
+
+    <!-- 添加任务按钮（仅今天显示） -->
+    <view class="add-task-btn" bindtap="goToAddTask" wx:if="{{isToday}}">
       <text class="add-icon">＋</text>
       <text class="add-text">添加新任务</text>
     </view>
