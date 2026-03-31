@@ -21,7 +21,7 @@ Page({
   },
 
   onShow: function () {
-    this.loadData();
+    this.loadData(this._selectedDateKey);
   },
 
   loadData: function (dateKey) {
@@ -138,10 +138,6 @@ Page({
   },
 
   toggleSubTask: function (e) {
-    if (!this.data.isToday) {
-      wx.showToast({ title: '历史记录不可修改', icon: 'none' });
-      return;
-    }
     var taskId = e.currentTarget.dataset.taskId;
     var subId = e.currentTarget.dataset.subId;
     var today = this._selectedDateKey || app.getTodayKey();
@@ -220,6 +216,7 @@ Page({
   },
 
   deleteTask: function (e) {
+    if (!this.data.isToday) return;
     var that = this;
     var taskId = e.currentTarget.dataset.taskId;
     wx.showModal({

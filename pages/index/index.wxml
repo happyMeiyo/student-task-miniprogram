@@ -88,7 +88,7 @@
           <view class="task-edit-btn" bindtap="goToDetail" data-task-id="{{task.id}}">
             <text class="task-edit-text">编辑</text>
           </view>
-          <view class="task-del-btn" bindtap="deleteTask" data-task-id="{{task.id}}">
+          <view class="task-del-btn" bindtap="deleteTask" data-task-id="{{task.id}}" wx:if="{{isToday}}">
             <text class="task-del-text">🗑</text>
           </view>
         </view>
