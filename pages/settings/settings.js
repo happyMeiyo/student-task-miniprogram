@@ -15,6 +15,7 @@ Page({
     progress: 0,
     editingName: false,
     tempName: '',
+    version: '',
   },
 
   onShow() {
@@ -43,6 +44,7 @@ Page({
       completedToday: completedSub,
       progress,
       tempName: studentName,
+      version: app.globalData.version,
     });
   },
 
@@ -95,24 +97,6 @@ Page({
     });
 
     wx.navigateTo({ url: '/pages/export-pdf/export-pdf' });
-  },
-
-  clearAllData() {
-    wx.showModal({
-      title: '⚠️ 清除所有数据',
-      content: '这将删除所有任务和历史记录，无法恢复，确认吗？',
-      confirmColor: '#FF7F7F',
-      success: (res) => {
-        if (res.confirm) {
-          wx.clearStorageSync();
-          wx.showToast({ title: '已清除', icon: 'success' });
-          setTimeout(() => {
-            getApp().onLaunch();
-            this.loadData();
-          }, 500);
-        }
-      }
-    });
   },
 
   resetDefaultTasks() {

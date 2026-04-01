@@ -95,22 +95,7 @@
           <text class="menu-name">每日任务清单</text>
           <text class="menu-desc">专为小学生设计的任务管理工具</text>
         </view>
-        <text class="version-text">v1.0</text>
-      </view>
-    </view>
-  </view>
-
-  <view class="menu-section">
-    <view class="menu-card danger-card">
-      <view class="menu-item" hover-class="menu-item-hover" bindtap="clearAllData">
-        <view class="menu-icon-wrap" style="background: #FFF0F0;">
-          <text class="menu-icon">🗑</text>
-        </view>
-        <view class="menu-text">
-          <text class="menu-name danger-text">清除所有数据</text>
-          <text class="menu-desc">删除全部任务和历史记录</text>
-        </view>
-        <text class="menu-arrow danger-text">›</text>
+        <text class="version-text">{{version}}</text>
       </view>
     </view>
   </view>

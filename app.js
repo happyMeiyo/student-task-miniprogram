@@ -158,6 +158,7 @@ App({
   _collectLocalData() {
     const tasks = wx.getStorageSync('tasks') || [];
     const studentName = wx.getStorageSync('studentName') || '同学';
+    const updatedAt = wx.getStorageSync('dataUpdatedAt') || 0;
     const dailyRecords = {};
     try {
       const keys = wx.getStorageInfoSync().keys || [];
@@ -167,23 +168,49 @@ App({
         }
       });
     } catch (e) {}
-    return { tasks, studentName, dailyRecords, updatedAt: Date.now() };
+    return { tasks, studentName, dailyRecords, updatedAt };
   },
 
-  // 将云端数据写入本地
-  _applyCloudData(data) {
-    if (!data) return;
-    if (data.tasks && data.tasks.length > 0) wx.setStorageSync('tasks', data.tasks);
-    if (data.studentName) wx.setStorageSync('studentName', data.studentName);
-    if (data.dailyRecords) {
-      const keys = Object.keys(data.dailyRecords);
-      for (let i = 0; i < keys.length; i++) {
-        wx.setStorageSync(keys[i], data.dailyRecords[keys[i]]);
+  // 合并云端数据到本地（不丢失任何一方的每日记录）
+  _applyCloudData(cloudData, localData) {
+    if (!cloudData) return;
+    if (cloudData.tasks && cloudData.tasks.length > 0) wx.setStorageSync('tasks', cloudData.tasks);
+    if (cloudData.studentName) wx.setStorageSync('studentName', cloudData.studentName);
+
+    // 合并每日记录：云端 + 本地取并集，同一天取完成数更多的版本
+    const mergedKeys = new Set();
+    if (cloudData.dailyRecords) Object.keys(cloudData.dailyRecords).forEach(k => mergedKeys.add(k));
+    if (localData && localData.dailyRecords) Object.keys(localData.dailyRecords).forEach(k => mergedKeys.add(k));
+
+    mergedKeys.forEach(key => {
+      const cloudRec = cloudData.dailyRecords && cloudData.dailyRecords[key];
+      const localRec = localData && localData.dailyRecords && localData.dailyRecords[key];
+      if (cloudRec && localRec) {
+        // 两端都有：取完成项更多的版本
+        const cloudDone = (cloudRec.completedIds || []).length + (cloudRec.subCompletedIds || []).length;
+        const localDone = (localRec.completedIds || []).length + (localRec.subCompletedIds || []).length;
+        wx.setStorageSync(key, localDone >= cloudDone ? localRec : cloudRec);
+      } else {
+        wx.setStorageSync(key, cloudRec || localRec);
+      }
+    });
+
+    // 持久化云端时间戳
+    if (cloudData.updatedAt) wx.setStorageSync('dataUpdatedAt', cloudData.updatedAt);
+  },
+
+  // 云端数据下载后通知当前页面刷新
+  _notifyPageReload() {
+    var pages = getCurrentPages();
+    if (pages.length > 0) {
+      var curPage = pages[pages.length - 1];
+      if (curPage && typeof curPage.loadData === 'function') {
+        curPage.loadData();
       }
     }
   },
 
-  // 启动同步：比较时间戳，取最新数据
+  // 启动同步：比较时间戳，合并数据
   cloudSync(callback) {
     if (!wx.cloud) { callback && callback('unsupported'); return; }
     const db = wx.cloud.database();
@@ -196,16 +223,25 @@ App({
         if (res.data && res.data.length > 0) {
           const cloud = res.data[0];
           if (cloud.updatedAt && cloud.updatedAt > localData.updatedAt) {
-            // 云端更新 → 下载
-            that._applyCloudData(cloud);
+            // 云端更新 → 合并下载（保留本地独有的每日记录）
+            that._applyCloudData(cloud, localData);
+            that._notifyPageReload();
             callback && callback('downloaded');
           } else {
             // 本地更新 → 上传
-            col.doc(cloud._id).update({ data: localData, success() { callback && callback('uploaded'); }, fail() { callback && callback('error'); } });
+            const uploadData = Object.assign({}, localData, { updatedAt: Date.now() });
+            col.doc(cloud._id).update({ data: uploadData, success() {
+              wx.setStorageSync('dataUpdatedAt', uploadData.updatedAt);
+              callback && callback('uploaded');
+            }, fail() { callback && callback('error'); } });
           }
         } else {
           // 云端无数据 → 新建
-          col.add({ data: localData, success() { callback && callback('uploaded'); }, fail() { callback && callback('error'); } });
+          var uploadData = Object.assign({}, localData, { updatedAt: Date.now() });
+          col.add({ data: uploadData, success() {
+            wx.setStorageSync('dataUpdatedAt', uploadData.updatedAt);
+            callback && callback('uploaded');
+          }, fail() { callback && callback('error'); } });
         }
       },
       fail() { callback && callback('error'); }
@@ -215,6 +251,8 @@ App({
   // 数据变更时延迟 3 秒上传（防抖）
   notifyDataChange() {
     if (!wx.cloud) return;
+    // 标记本地数据变更时间
+    wx.setStorageSync('dataUpdatedAt', Date.now());
     if (this._syncTimer) clearTimeout(this._syncTimer);
     const that = this;
     this._syncTimer = setTimeout(function () {
@@ -223,6 +261,7 @@ App({
   },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    version: 'v2.2.0'
   }
 });
