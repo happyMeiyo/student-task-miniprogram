@@ -5,25 +5,14 @@
   position: relative;
   background: linear-gradient(135deg, #3D9BD1 0%, #5EAD8B 100%);
   padding-top: env(safe-area-inset-top);
+  border-radius: 0 0 40rpx 40rpx;
   overflow: hidden;
 }
 
 .header-content {
-  padding: 30rpx 32rpx 60rpx;
+  padding: 30rpx 32rpx 36rpx;
   position: relative;
   z-index: 1;
-}
-
-/* 底部圆弧 */
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -2rpx;
-  left: -20rpx;
-  right: -20rpx;
-  height: 60rpx;
-  background: #FFF8EC;
-  border-radius: 50%;
 }
 
 /* 装饰圆 */
@@ -184,8 +173,7 @@
 
 /* ─── 任务列表 ─── */
 .task-list {
-  padding: 16rpx 24rpx 0;
-  margin-top: -20rpx;
+  padding: 20rpx 24rpx 0;
 }
 
 /* ─── 任务卡片 ─── */
