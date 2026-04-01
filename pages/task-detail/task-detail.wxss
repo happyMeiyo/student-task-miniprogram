@@ -88,7 +88,7 @@
 
 .preview-icon-hint {
   font-size: 22rpx;
-  color: rgba(255,255,255,0.8);
+  color: #FFFFFF;
   background: rgba(0,0,0,0.15);
   border-radius: 20rpx;
   padding: 6rpx 16rpx;
@@ -109,7 +109,7 @@
 .section-label {
   display: block;
   font-size: 24rpx;
-  color: #666666;
+  color: #5A5A5A;
   margin-bottom: 16rpx;
 }
 
@@ -132,7 +132,7 @@
 
 .icon-selected {
   background: #E8F7FF;
-  border: 3rpx solid #6EC6F5;
+  border: 3rpx solid #3D9BD1;
   transform: scale(1.1);
 }
 
@@ -183,7 +183,7 @@
 }
 
 .form-input:focus {
-  border-color: #6EC6F5;
+  border-color: #3D9BD1;
   background: #fff;
 }
 
@@ -275,7 +275,7 @@
 
 .sub-time {
   font-size: 22rpx;
-  color: #777777;
+  color: #5A5A5A;
 }
 
 .sub-actions {
@@ -336,7 +336,7 @@
 
 .sub-empty-text {
   font-size: 26rpx;
-  color: #888888;
+  color: #767676;
 }
 
 /* ─── 弹窗 ─── */

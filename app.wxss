@@ -21,4 +21,4 @@ page {
   padding: 80rpx 40rpx;
 }
 .empty-icon { font-size: 100rpx; margin-bottom: 20rpx; }
-.empty-text { font-size: 28rpx; color: #666666; }
+.empty-text { font-size: 28rpx; color: #5A5A5A; }

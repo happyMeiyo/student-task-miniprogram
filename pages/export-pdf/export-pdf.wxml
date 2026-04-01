@@ -59,7 +59,7 @@
           data-index="{{index}}"
           bindtap="toggleTask"
         >
-          <view class="select-checkbox {{item.selected ? 'checked' : ''}}" style="border-color:{{item.color || '#6EC6F5'}}; background:{{item.selected ? item.color || '#6EC6F5' : 'transparent'}};">
+          <view class="select-checkbox {{item.selected ? 'checked' : ''}}" style="border-color:{{item.color || '#3D9BD1'}}; background:{{item.selected ? item.color || '#3D9BD1' : 'transparent'}};">
             <text class="select-check-icon" wx:if="{{item.selected}}">✓</text>
           </view>
           <view class="select-item-info">

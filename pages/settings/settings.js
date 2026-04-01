@@ -103,7 +103,7 @@ Page({
     wx.showModal({
       title: '恢复默认任务',
       content: '将恢复默认的6个任务，当前自定义任务会被替换',
-      confirmColor: '#6EC6F5',
+      confirmColor: '#3D9BD1',
       success: (res) => {
         if (res.confirm) {
           wx.removeStorageSync('tasks');

@@ -2,7 +2,7 @@
 
 /* ─── 顶部 ─── */
 .header {
-  background: linear-gradient(135deg, #6EC6F5 0%, #A8E6CF 100%);
+  background: linear-gradient(135deg, #3D9BD1 0%, #5EAD8B 100%);
   padding: calc(env(safe-area-inset-top) + 30rpx) 32rpx 50rpx;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@
 }
 
 .student-name { font-size: 40rpx; font-weight: 900; color: #fff; }
-.edit-hint { font-size: 22rpx; color: rgba(255,255,255,0.9); }
+.edit-hint { font-size: 22rpx; color: #FFFFFF; }
 
 .name-edit-row {
   display: flex; align-items: center; gap: 12rpx;
@@ -87,7 +87,7 @@
 }
 
 .stat-num { font-size: 40rpx; font-weight: 900; color: #2EA7D8; white-space: nowrap; }
-.stat-label { font-size: 22rpx; color: #666666; white-space: nowrap; }
+.stat-label { font-size: 22rpx; color: #5A5A5A; white-space: nowrap; }
 
 .stat-divider { width: 2rpx; height: 60rpx; background: #EEEEEE; flex-shrink: 0; }
 
@@ -98,7 +98,7 @@
 }
 
 .menu-title {
-  display: block; font-size: 24rpx; color: #666666;
+  display: block; font-size: 24rpx; color: #5A5A5A;
   font-weight: 700; margin-bottom: 12rpx;
   padding-left: 4rpx;
 }
@@ -127,9 +127,9 @@
 .menu-text { flex: 1; min-width: 0; }
 
 .menu-name { display: block; font-size: 28rpx; font-weight: 700; color: #2D2D2D; margin-bottom: 4rpx; }
-.menu-desc { font-size: 22rpx; color: #666666; }
+.menu-desc { font-size: 22rpx; color: #5A5A5A; }
 
-.menu-arrow { font-size: 40rpx; color: #888888; }
+.menu-arrow { font-size: 40rpx; color: #767676; }
 
 /* ─── 吸底分享按钮 ─── */
 .share-bottom-wrap {
@@ -139,12 +139,12 @@
   backdrop-filter: blur(8px);
 }
 .share-bottom-btn {
-  background: linear-gradient(135deg, #6EC6F5, #A8E6CF);
+  background: linear-gradient(135deg, #3D9BD1, #5EAD8B);
   color: #fff; font-size: 30rpx; font-weight: 700;
   border: none; border-radius: 24rpx;
   padding: 24rpx 0; text-align: center;
-  box-shadow: 0 4rpx 16rpx rgba(110, 198, 245, 0.35);
+  box-shadow: 0 4rpx 16rpx rgba(61, 155, 209, 0.35);
 }
 .share-bottom-btn::after { display: none; }
 
-.version-text { font-size: 24rpx; color: #888888; }
+.version-text { font-size: 24rpx; color: #767676; }
