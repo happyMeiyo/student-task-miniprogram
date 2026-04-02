@@ -208,7 +208,8 @@ Page({
 
   goToDetail: function (e) {
     var taskId = e.currentTarget.dataset.taskId;
-    wx.navigateTo({ url: '/pages/task-detail/task-detail?taskId=' + taskId });
+    var dateKey = this._selectedDateKey || app.getTodayKey();
+    wx.navigateTo({ url: '/pages/task-detail/task-detail?taskId=' + taskId + '&dateKey=' + dateKey });
   },
 
   goToAddTask: function () {

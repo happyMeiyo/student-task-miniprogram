@@ -27,13 +27,22 @@ Page({
   },
 
   onLoad(options) {
-    const { taskId } = options;
+    const { taskId, dateKey } = options;
+    this._dateKey = dateKey || '';
+    this._isHistorical = dateKey ? dateKey < getApp().getTodayKey() : false;
     this.setData({ taskId });
     this.loadTask(taskId);
   },
 
   loadTask(taskId) {
-    const tasks = wx.getStorageSync('tasks') || [];
+    // 历史日期从每日记录快照读取，今天/未来从全局 tasks 读取
+    var tasks;
+    if (this._isHistorical) {
+      var record = wx.getStorageSync('dailyRecord_' + this._dateKey);
+      tasks = (record && record.tasks) || [];
+    } else {
+      tasks = wx.getStorageSync('tasks') || [];
+    }
     const task = tasks.find(t => t.id === taskId);
     if (!task) {
       wx.showToast({ title: '任务不存在', icon: 'none' });
@@ -41,12 +50,33 @@ Page({
       return;
     }
     this.setData({
-      task: JSON.parse(JSON.stringify(task)), // 深拷贝
+      task: JSON.parse(JSON.stringify(task)),
       editName: task.name,
       editIcon: task.icon,
       editTime: task.estimatedTime,
       editColor: task.color,
     });
+  },
+
+  // 读取当前编辑的任务列表（区分历史/当天）
+  _getEditTasks() {
+    if (this._isHistorical) {
+      var record = wx.getStorageSync('dailyRecord_' + this._dateKey);
+      return (record && record.tasks) || [];
+    }
+    return wx.getStorageSync('tasks') || [];
+  },
+
+  // 保存任务列表到对应存储位置
+  _saveEditTasks(tasks) {
+    if (this._isHistorical) {
+      var record = wx.getStorageSync('dailyRecord_' + this._dateKey) || {};
+      record.tasks = tasks;
+      wx.setStorageSync('dailyRecord_' + this._dateKey, record);
+    } else {
+      wx.setStorageSync('tasks', tasks);
+    }
+    app.notifyDataChange();
   },
 
   // 保存主任务基本信息
@@ -57,7 +87,7 @@ Page({
       return;
     }
 
-    let tasks = wx.getStorageSync('tasks') || [];
+    let tasks = this._getEditTasks();
     const idx = tasks.findIndex(t => t.id === taskId);
     if (idx === -1) return;
 
@@ -69,8 +99,7 @@ Page({
       color: editColor,
     };
 
-    wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
+    this._saveEditTasks(tasks);
 
     setTimeout(() => {
       wx.navigateBack();
@@ -113,7 +142,7 @@ Page({
       return;
     }
 
-    let tasks = wx.getStorageSync('tasks') || [];
+    let tasks = this._getEditTasks();
     const idx = tasks.findIndex(t => t.id === taskId);
     if (idx === -1) return;
 
@@ -126,9 +155,7 @@ Page({
 
     if (!tasks[idx].subTasks) tasks[idx].subTasks = [];
     tasks[idx].subTasks.push(newSub);
-    wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
-
+    this._saveEditTasks(tasks);
 
     this.setData({
       task: JSON.parse(JSON.stringify(tasks[idx])),
@@ -163,7 +190,7 @@ Page({
       return;
     }
 
-    let tasks = wx.getStorageSync('tasks') || [];
+    let tasks = this._getEditTasks();
     const tIdx = tasks.findIndex(t => t.id === taskId);
     if (tIdx === -1) return;
 
@@ -176,8 +203,7 @@ Page({
       estimatedTime: Number(editSubTime) || 10,
     };
 
-    wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
+    this._saveEditTasks(tasks);
 
     this.setData({
       task: JSON.parse(JSON.stringify(tasks[tIdx])),
@@ -189,21 +215,20 @@ Page({
   // 删除子任务
   deleteSubTask(e) {
     const { subId } = e.currentTarget.dataset;
+    const that = this;
     wx.showModal({
       title: '删除子任务',
       content: '确定要删除这个子任务吗？',
       confirmColor: '#FF7F7F',
       success: (res) => {
         if (!res.confirm) return;
-        const { taskId } = this.data;
-        let tasks = wx.getStorageSync('tasks') || [];
+        const { taskId } = that.data;
+        let tasks = that._getEditTasks();
         const tIdx = tasks.findIndex(t => t.id === taskId);
         if (tIdx === -1) return;
         tasks[tIdx].subTasks = tasks[tIdx].subTasks.filter(s => s.id !== subId);
-        wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
-
-        this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
+        that._saveEditTasks(tasks);
+        that.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
       }
     });
   },
@@ -212,16 +237,14 @@ Page({
   moveSubUp(e) {
     const { subId } = e.currentTarget.dataset;
     const { taskId } = this.data;
-    let tasks = wx.getStorageSync('tasks') || [];
+    let tasks = this._getEditTasks();
     const tIdx = tasks.findIndex(t => t.id === taskId);
     if (tIdx === -1) return;
     const subs = tasks[tIdx].subTasks;
     const idx = subs.findIndex(s => s.id === subId);
     if (idx <= 0) return;
     [subs[idx - 1], subs[idx]] = [subs[idx], subs[idx - 1]];
-    wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
-
+    this._saveEditTasks(tasks);
     this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
   },
 
@@ -229,16 +252,14 @@ Page({
   moveSubDown(e) {
     const { subId } = e.currentTarget.dataset;
     const { taskId } = this.data;
-    let tasks = wx.getStorageSync('tasks') || [];
+    let tasks = this._getEditTasks();
     const tIdx = tasks.findIndex(t => t.id === taskId);
     if (tIdx === -1) return;
     const subs = tasks[tIdx].subTasks;
     const idx = subs.findIndex(s => s.id === subId);
     if (idx >= subs.length - 1) return;
     [subs[idx], subs[idx + 1]] = [subs[idx + 1], subs[idx]];
-    wx.setStorageSync('tasks', tasks);
-    app.notifyDataChange();
-
+    this._saveEditTasks(tasks);
     this.setData({ task: JSON.parse(JSON.stringify(tasks[tIdx])) });
   },
 
