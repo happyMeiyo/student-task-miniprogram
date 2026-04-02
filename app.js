@@ -175,7 +175,9 @@ App({
   _applyCloudData(cloudData, localData) {
     if (!cloudData) return;
     if (cloudData.tasks && cloudData.tasks.length > 0) wx.setStorageSync('tasks', cloudData.tasks);
-    if (cloudData.studentName) wx.setStorageSync('studentName', cloudData.studentName);
+    if (cloudData.studentName !== undefined && cloudData.studentName !== null) {
+      wx.setStorageSync('studentName', cloudData.studentName || '同学');
+    }
 
     // 合并每日记录：云端 + 本地取并集，同一天取完成数更多的版本
     const mergedKeys = new Set();

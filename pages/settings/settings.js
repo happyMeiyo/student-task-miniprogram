@@ -120,8 +120,8 @@ Page({
     wx.showLoading({ title: '同步中...' });
     app.cloudSync(function (result) {
       wx.hideLoading();
+      that.loadData();
       if (result === 'downloaded') {
-        that.loadData();
         wx.showToast({ title: '已同步云端数据', icon: 'success' });
       } else if (result === 'uploaded') {
         wx.showToast({ title: '已上传到云端', icon: 'success' });
